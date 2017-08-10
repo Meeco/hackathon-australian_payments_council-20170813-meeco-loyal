@@ -1,0 +1,21 @@
+FROM node:6.9.4-slim
+WORKDIR /tmp
+ENV CHROME_PACKAGE="google-chrome-stable_58.0.3029.96-1_amd64.deb" NODE_PATH=/usr/local/lib/node_modules
+RUN apt-get update && \
+    apt-get install -y xvfb wget openjdk-7-jre && \
+    wget https://github.com/webnicer/chrome-downloads/raw/master/x64.deb/${CHROME_PACKAGE} && \
+    dpkg --unpack ${CHROME_PACKAGE} && \
+    apt-get install -f -y && \
+    apt-get clean && \
+    rm ${CHROME_PACKAGE}
+
+ENV DBUS_SESSION_BUS_ADDRESS=/dev/null
+ENV SCREEN_RES=1280x1024x24
+
+WORKDIR /usr/local/src
+COPY package.json /usr/local/src/package.json
+RUN npm install
+COPY . /usr/local/src
+RUN npm run ionic:build
+CMD npm run e2e
+
