@@ -8,6 +8,7 @@ import {StatusBar} from '@ionic-native/status-bar';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
 import {TranslateLoader} from '@ngx-translate/core';
+import {Configuration} from '@obp/sdk';
 import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 
 import {Items} from '../mocks/providers/items';
@@ -29,6 +30,7 @@ import {TabsPage} from '../pages/tabs/tabs';
 import {TutorialPage} from '../pages/tutorial/tutorial';
 import {WelcomePage} from '../pages/welcome/welcome';
 import {Api} from '../providers/api';
+import {OBP} from '../providers/obp';
 import {User} from '../providers/user';
 import {reducer} from '../reducers';
 
@@ -54,9 +56,14 @@ export function entryComponents() {
 
 export function providers() {
   return [
-    Api, Items, User, Camera, GoogleMaps, SplashScreen, StatusBar,
+    Api, Items, User, Camera, GoogleMaps, SplashScreen, StatusBar, OBP,
     // Keep this to enable Ionic's runtime error handling during development
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler}, {
+      provide: Configuration,
+      useFactory: () => {
+        return new Configuration({apiKeys: {Authotrization: 'bbbb'}});
+      }
+    }
   ];
 }
 

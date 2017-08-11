@@ -1,29 +1,25 @@
-import { Component } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {ModalController, NavController} from 'ionic-angular';
+import {Observable} from 'rxjs/Observable';
 
-import { ItemCreatePage } from '../item-create/item-create';
-import { ItemDetailPage } from '../item-detail/item-detail';
+import {Item} from '../../models/item';
+import {Items} from '../../providers/providers';
+import {ItemCreatePage} from '../item-create/item-create';
+import {ItemDetailPage} from '../item-detail/item-detail';
 
-import { Items } from '../../providers/providers';
-
-import { Item } from '../../models/item';
-
-@Component({
-  selector: 'page-list-master',
-  templateUrl: 'list-master.html'
-})
+@Component({selector: 'page-list-master', templateUrl: 'list-master.html'})
 export class ListMasterPage {
-  currentItems: Item[];
+  currentItems$: any;
 
-  constructor(public navCtrl: NavController, public items: Items, public modalCtrl: ModalController) {
-    this.currentItems = this.items.query();
+  constructor(
+      public navCtrl: NavController, public items: Items, public modalCtrl: ModalController) {
+    this.currentItems$ = this.items.query({id: 'au.01.aum.anz'});
   }
 
   /**
    * The view loaded, let's query our items for the list
    */
-  ionViewDidLoad() {
-  }
+  ionViewDidLoad() {}
 
   /**
    * Prompt the user to add a new item. This shows our ItemCreatePage in a
@@ -50,8 +46,9 @@ export class ListMasterPage {
    * Navigate to the detail page for this item.
    */
   openItem(item: Item) {
-    this.navCtrl.push(ItemDetailPage, {
-      item: item
-    });
+    this.navCtrl.push(ItemDetailPage, {item: item});
+  }
+  avatar(short_name: string) {
+    return `https://api.adorable.io/avatars/285/${short_name}.png`
   }
 }

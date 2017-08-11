@@ -15,15 +15,20 @@
 <ion-content>
 
   <ion-list>
-    <ion-item-sliding *ngFor="let item of currentItems">
-      <button ion-item (click)="openItem(item)">
+    <ion-item-sliding *ngFor="let item of (currentItems$ | async)?.banks">
+      <div ion-item>
+
         <ion-avatar item-start>
-          <img [src]="item.profilePic" />
+          <a target="_blank" [href]="item.website">
+            <img [src]="item.logo || avatar(item.short_name)" />
+          </a>
         </ion-avatar>
-        <h2>{{item.name}}</h2>
-        <p>{{item.about}}</p>
-        <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
-      </button>
+        <button (click)="openItem(item)">
+          <h2>{{item.full_name}}</h2>
+            <!-- <p>{{item.about}}</p> -->
+            <!-- <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note> -->
+        </button>
+      </div>
 
       <ion-item-options>
         <button ion-button color="danger" (click)="deleteItem(item)">
