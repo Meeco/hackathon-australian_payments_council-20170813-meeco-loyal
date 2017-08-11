@@ -10,10 +10,17 @@
 <ion-content>
   <form (submit)="doLogin()">
     <ion-list>
+      <ion-item>
+        <ion-label>Profiles</ion-label>
+        <ion-select name="user" [(ngModel)]="selected">
+          <ion-option *ngFor="let user of users" [value]="user">{{user.user_name}}</ion-option>
+        </ion-select>
+      </ion-item>
+
 
       <ion-item>
         <ion-label fixed>{{ 'EMAIL' | translate }}</ion-label>
-        <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
+        <ion-input type="email" [(ngModel)]="selected.user_name" name="email"></ion-input>
       </ion-item>
 
       <!--
@@ -27,7 +34,7 @@
 
       <ion-item>
         <ion-label fixed>{{ 'PASSWORD' | translate }}</ion-label>
-        <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
+        <ion-input type="password" [(ngModel)]="selected.password" name="password"></ion-input>
       </ion-item>
 
       <div padding>
