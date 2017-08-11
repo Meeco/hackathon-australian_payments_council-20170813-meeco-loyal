@@ -40,7 +40,7 @@ export class LoginPage {
         .subscribe(
             (resp) => {
               let {token} = resp;
-              localStorage.setItem('Authorization', token);
+              localStorage.setItem('Authorization', `DirectLogin token="${token}"`);
               this.navCtrl.push(MainPage);
             },
             (err) => {
