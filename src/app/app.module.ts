@@ -61,7 +61,14 @@ export function providers() {
     {provide: ErrorHandler, useClass: IonicErrorHandler}, {
       provide: Configuration,
       useFactory: () => {
-        return new Configuration({apiKeys: {Authotrization: 'bbbb'}});
+        return new Configuration({
+          apiKeys: <any> {
+            get Authotrization() {
+              debugger;
+              return localStorage.getItem('Authorization');
+            }
+          }
+        });
       }
     }
   ];
