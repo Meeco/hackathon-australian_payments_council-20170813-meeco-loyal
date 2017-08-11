@@ -63,8 +63,7 @@ export function providers() {
       useFactory: () => {
         return new Configuration({
           apiKeys: <any> {
-            get Authotrization() {
-              debugger;
+            get Authorization() {
               return localStorage.getItem('Authorization');
             }
           }
