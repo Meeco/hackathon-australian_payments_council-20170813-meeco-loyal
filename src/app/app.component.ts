@@ -37,7 +37,7 @@ import {WelcomePage} from '../pages/welcome/welcome';
   <ion-nav #content [root]="rootPage"></ion-nav>`
 })
 export class App {
-  rootPage = FirstRunPage;
+  rootPage = WelcomePage;
 
   @ViewChild(Nav) nav: Nav;
 
