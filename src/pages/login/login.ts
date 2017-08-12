@@ -174,10 +174,9 @@ export class LoginPage {
     //get all counterparties
     for(let transaction of transactions) {
       let otherAccount = transaction.other_account;
-      console.log(`url is ${JSON.stringify(otherAccount.metadata.URL)}`)
       if(otherAccount.metadata.URL) {
         if(otherAccount.metadata.URL && !storageCounterparties[otherAccount.metadata.URL]) {
-          storageCounterparties[otherAccount.metadata.URL] = {accounts:{}}
+          storageCounterparties[otherAccount.metadata.URL] = {accounts:{}, URL: otherAccount.metadata.URL}
         }
         storageCounterparties[otherAccount.metadata.URL]['accounts'][otherAccount.id] = otherAccount;
       }      

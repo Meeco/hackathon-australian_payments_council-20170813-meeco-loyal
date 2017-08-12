@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { ItemDetailPage } from '../item-detail/item-detail';
@@ -12,11 +12,18 @@ import { Items } from '../../providers/providers';
   selector: 'page-search',
   templateUrl: 'search.html'
 })
-export class SearchPage {
-  
+export class SearchPage implements OnInit{
   currentItems: any = [];
+  counterparties = [];
+  selectedCounterparty = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public items: Items) { }
+  constructor(public navCtrl: NavController, public navParams: NavParams, public items: Items) {
+    
+  }
+
+  ngOnInit(): void {
+    this.getCounterparties()
+  }
 
   /**
    * Perform a service for the proper items.
@@ -41,9 +48,11 @@ export class SearchPage {
     });
   }
 
-  // getCounterparties() {
-  //   let transactions = JSON.parse(localStorage.getItem('transactions'));
-    
-  // }
+  getCounterparties() {
+    let counterparties = JSON.parse(localStorage.getItem('counterparties'));
+    this.counterparties = Object.keys(counterparties).map(function(key) {
+      return counterparties[key];
+    });
+  }
 
 }
