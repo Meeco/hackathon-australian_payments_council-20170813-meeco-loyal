@@ -83,6 +83,7 @@ export class LoginPage {
 
   // Our translated text strings
   private loginErrorString: string;
+  loadingAllUserData = false;
 
   constructor(
     public navCtrl: NavController, public user: User, public toastCtrl: ToastController,
@@ -120,6 +121,33 @@ export class LoginPage {
           { message: this.loginErrorString, duration: 3000, position: 'top' });
         toast.present();
       });
+  }
+
+
+
+  async loadAllUserData() {
+    this.loadingAllUserData = true;
+    for(let user of this.users) {
+      console.log(`getting data for ${user.user_name}`)
+      let { token } = await this.loginToLoadData();
+      localStorage.setItem('Authorization', `DirectLogin token="${token}"`);
+      await this.getAllTheUsersData();
+    }
+    localStorage.setItem('Authorization', '');
+    this.loadingAllUserData = false;
+  }
+
+  loginToLoadData() {
+    let headers = new Headers({
+      Authorization:
+      `DirectLogin username="${
+      this.selected.user_name
+      }",   password="${
+      this.selected.password
+      }",  consumer_key="nsarsbud0jyhx5oxawfqh0xnl3405tt0jb4y3nak"`
+    });
+    return this.http.post('https://apc.openbankproject.com/my/logins/direct', {}, { headers })
+      .map(res => res.json()).toPromise();
   }
 
   async getAllTheUsersData() {
