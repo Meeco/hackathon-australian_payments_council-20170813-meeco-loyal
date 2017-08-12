@@ -8,6 +8,7 @@
 
 <ion-content>
   {{user$ | async | json}}
+  <pre>{{data | json}}</pre>
   <!-- <form [formGroup]="form" *ngIf="settingsReady">
     <ion-list *ngIf="page == 'main'">
       <ion-item>
