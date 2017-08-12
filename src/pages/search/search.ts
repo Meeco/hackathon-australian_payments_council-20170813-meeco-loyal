@@ -15,14 +15,18 @@ import { Items } from '../../providers/providers';
 export class SearchPage implements OnInit{
   currentItems: any = [];
   counterparties = [];
-  selectedCounterparty = null;
+  users = [];
+  transactions = [];
+  selected = null;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public items: Items) {
     
   }
 
   ngOnInit(): void {
-    this.getCounterparties()
+    this.getCounterparties();
+    this.getTransactions();
+    this.getUsers();
   }
 
   /**
@@ -48,10 +52,46 @@ export class SearchPage implements OnInit{
     });
   }
 
+  getList() {
+    let userList = {};
+    if(this.selected) {
+      for(let transaction of this.transactions) {
+
+        if(transaction.other_account.metadata.URL === this.selected.URL) {
+          if(!userList[transaction.user_id]) {
+            userList[transaction.user_id] = {
+              user: this.users[transaction.user_id], 
+              amount: parseFloat(transaction.details.value.amount),
+              transactions: [transaction]
+            }
+          } else {
+            userList[transaction.user_id].amount = userList[transaction.user_id].amount + parseFloat(transaction.details.value.amount);
+            userList[transaction.user_id].transactions.push(transaction)
+          }
+        }
+      }
+      
+    }
+    return Object.keys(userList).map(function(key) {
+      return userList[key];
+    });
+  }
+
   getCounterparties() {
     let counterparties = JSON.parse(localStorage.getItem('counterparties'));
     this.counterparties = Object.keys(counterparties).map(function(key) {
       return counterparties[key];
+    });
+  }
+
+  getUsers() {
+    this.users = JSON.parse(localStorage.getItem('users'));
+  }
+
+  getTransactions() {
+    let transactions = JSON.parse(localStorage.getItem('transactions'));
+    this.transactions = Object.keys(transactions).map(function(key) {
+      return transactions[key];
     });
   }
 
