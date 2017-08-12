@@ -35,7 +35,7 @@
     "@ngrx/store": "^2.2.2",
     "@ngx-translate/core": "^6.0.1",
     "@ngx-translate/http-loader": "0.0.3",
-    "@obp/sdk": "https://github.com/NextFaze/openbank-sdk.git",
+    "@obp/sdk": "git+https://github.com/NextFaze/openbank-sdk.git",
     "angulartics2": "^2.2.1",
     "ionic-angular": "3.3.0",
     "ionicons": "3.0.0",
