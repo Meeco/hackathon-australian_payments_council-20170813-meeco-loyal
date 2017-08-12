@@ -65,7 +65,7 @@ export class SettingsPage {
                                   [...a[b.other_account.metadata.URL] || [], b];
                               return a;
                             }, {});
-              return txs;
+              return Object.keys(txs);
             });
   }
 

@@ -9,9 +9,9 @@
 <ion-content>
   <h1>FRESH DATA</h1>
   <pre>{{user$ | async | json}}</pre>
-  <pre>{{transactions$ | async | json}}</pre>
+  <!-- <pre>{{transactions$ | async | json}}</pre> -->
 
-
+  <a target="_blank" [href]="domain" *ngFor="let domain of transactions$ | async">{{domain}}</a><br>
   <h1>LOCAL STORAGE DATA</h1>
   <pre>{{localData | json}}</pre>
   <!-- <form [formGroup]="form" *ngIf="settingsReady">
