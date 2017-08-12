@@ -9,9 +9,12 @@
 <ion-content>
   <h1>FRESH DATA</h1>
   <pre>{{user$ | async | json}}</pre>
+  <pre>{{entitlements$ | async | json}}</pre>
   <!-- <pre>{{transactions$ | async | json}}</pre> -->
-
-  <a target="_blank" [href]="domain" *ngFor="let domain of transactions$ | async">{{domain}}</a><br>
+  <p *ngFor="let domain of transactions$ | async">
+    There are <button (click)="open(domain[0], domain[1])">{{domain[1].length}}</button> offers available for <a target="_blank"
+      [href]="domain[0]">{{domain[0]}}</a> <br>
+  </p>
   <h1>LOCAL STORAGE DATA</h1>
   <pre>{{localData | json}}</pre>
   <!-- <form [formGroup]="form" *ngIf="settingsReady">
