@@ -1,48 +1,25 @@
 <ion-header>
-
   <ion-navbar>
-    <ion-title>{{ 'CARDS_TITLE' | translate }}</ion-title>
+    <ion-title>Merchant Spend Comparison</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content>
-
-  <ion-card *ngFor="let item of cardItems">
-
-    <ion-item>
-      <ion-avatar item-start>
-        <img [src]="item.user.avatar">
-      </ion-avatar>
-      <h2>{{item.user.name}}</h2>
-      <p>{{item.date}}</p>
-    </ion-item>
-
-    <img [src]="item.image">
-
-    <ion-card-content>
-      <p>{{item.content}}</p>
-    </ion-card-content>
-
-    <ion-row>
-      <ion-col>
-        <button ion-button color="primary" clear small icon-left>
-            <ion-icon name='thumbs-up'></ion-icon>
-            12 Likes
-          </button>
-      </ion-col>
-      <ion-col>
-        <button ion-button color="primary" clear small icon-left>
-            <ion-icon name='text'></ion-icon>
-            4 Comments
-          </button>
-      </ion-col>
-      <ion-col center text-center>
-        <ion-note>
-          11h ago
-        </ion-note>
-      </ion-col>
-    </ion-row>
-  </ion-card>
+    <ion-list>
+      <ion-item *ngFor="let cat of categories | categorySort">
+        <h1>{{cat[0]}}</h1>
+        <ion-grid>
+          <ion-row>
+            <ion-col text-left><b>Merchant</b></ion-col>
+            <ion-col text-right><b>Spend</b></ion-col>
+            <ion-col text-right><b>Points per dollar</b></ion-col>
+          </ion-row>
+          <ion-row *ngFor="let merchant of cat[1]">
+            <ion-col text-left>{{merchant.metadata.URL | url}}</ion-col>
+            <ion-col text-right>$ {{merchantSpend(merchant.metadata.URL)}}</ion-col>
+            <ion-col text-right>{{merchant.pointsPerDollar}}</ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-list>
 </ion-content>
