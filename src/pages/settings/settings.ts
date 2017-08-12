@@ -1,7 +1,10 @@
+import 'rxjs/add/operator/switchMap';
+
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
 import {NavController, NavParams} from 'ionic-angular';
+import {combineLatest} from 'rxjs/observable/combineLatest';
 
 import {OBP} from '../../providers/obp';
 
@@ -27,6 +30,7 @@ export class SettingsPage {
 
   subSettings: any = SettingsPage;
   user$: any;
+  transactions$: any;
   data: any = {};
   localData: any = {};
 
@@ -37,22 +41,7 @@ export class SettingsPage {
   ngOnInit() {
     this.user$ = this.obp.api.getCurrentUser();
 
-    //fresh data
-    this.obp.api.getCurrentUser().subscribe(userData => {
-      this.data.userData = userData;
-    });
-    this.obp.api.corePrivateAccountsAllBanks().subscribe((privateAccounts: any) => {
-      this.data.privateAccounts = privateAccounts;
-      this.data.privateAccountTransactions = [];
-      for (let account of this.data.privateAccounts) {
-        this.obp.api.getTransactionsForBankAccount('owner', account.id, account.bank_id)
-            .subscribe(transactionsReturn => {
-              this.data.privateAccountTransactions.push(...transactionsReturn.transactions);
-            });
-      }
-    });
-
-    //local storage data
+    // local storage data
     let accounts = JSON.parse(localStorage.getItem('accounts'));
     this.localData.accounts = accounts ? accounts : {};
     let transactions = JSON.parse(localStorage.getItem('transactions'));
@@ -61,6 +50,21 @@ export class SettingsPage {
     this.localData.users = users ? users : {};
 
 
+    this.transactions$ =
+        this.obp.api.corePrivateAccountsAllBanks()
+            .switchMap((accts: any) => {
+              return combineLatest(accts.map((acct) => {
+                return this.obp.api.getTransactionsForBankAccount('owner', acct.id, acct.bank_id);
+              }));
+            })
+            .map(transactions => {
+              return transactions.map(({transactions}) => transactions)
+                  .reduce((a, b) => a.concat(b))
+                  .reduce((a, b) => {
+                    a[b.other_account.metadata.URL] = [...a[b.other_account.metadata.URL] || [], b];
+                    return a;
+                  }, {});
+            });
   }
 
   _buildForm() {

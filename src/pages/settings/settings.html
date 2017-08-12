@@ -7,9 +7,10 @@
 </ion-header>
 
 <ion-content>
-  {{user$ | async | json}}
   <h1>FRESH DATA</h1>
-  <pre>{{data | json}}</pre>
+  <pre>{{user$ | async | json}}</pre>
+  <pre>{{transactions$ | async | json}}</pre>
+
 
   <h1>LOCAL STORAGE DATA</h1>
   <pre>{{localData | json}}</pre>
