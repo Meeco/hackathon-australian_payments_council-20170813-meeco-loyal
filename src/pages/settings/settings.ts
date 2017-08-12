@@ -58,12 +58,14 @@ export class SettingsPage {
               }));
             })
             .map(transactions => {
-              return transactions.map(({transactions}) => transactions)
-                  .reduce((a, b) => a.concat(b))
-                  .reduce((a, b) => {
-                    a[b.other_account.metadata.URL] = [...a[b.other_account.metadata.URL] || [], b];
-                    return a;
-                  }, {});
+              let txs = transactions.map(({transactions}) => transactions)
+                            .reduce((a, b) => a.concat(b))
+                            .reduce((a, b) => {
+                              a[b.other_account.metadata.URL] =
+                                  [...a[b.other_account.metadata.URL] || [], b];
+                              return a;
+                            }, {});
+              return txs;
             });
   }
 
