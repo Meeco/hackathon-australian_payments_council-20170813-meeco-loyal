@@ -8,7 +8,11 @@
 
 <ion-content>
   {{user$ | async | json}}
+  <h1>FRESH DATA</h1>
   <pre>{{data | json}}</pre>
+
+  <h1>LOCAL STORAGE DATA</h1>
+  <pre>{{localData | json}}</pre>
   <!-- <form [formGroup]="form" *ngIf="settingsReady">
     <ion-list *ngIf="page == 'main'">
       <ion-item>

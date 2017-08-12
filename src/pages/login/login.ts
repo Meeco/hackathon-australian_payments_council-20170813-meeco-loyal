@@ -5,6 +5,7 @@ import {NavController, ToastController} from 'ionic-angular';
 
 import {MainPage} from '../../pages/pages';
 import {User} from '../../providers/user';
+import { OBP } from "../../providers/obp";
 
 
 @Component({selector: 'page-login', templateUrl: 'login.html'})
@@ -85,7 +86,7 @@ export class LoginPage {
 
   constructor(
       public navCtrl: NavController, public user: User, public toastCtrl: ToastController,
-      public translateService: TranslateService, public http: Http){
+      public translateService: TranslateService, public http: Http, public obp: OBP){
 
       this.translateService.get('LOGIN_ERROR').subscribe((value) => {
         this.loginErrorString = value;
@@ -93,6 +94,7 @@ export class LoginPage {
 
   // Attempt to login in through our User service
   doLogin() {
+    this.getAllTheUsersData();
     console.log(`the selected customer is ${JSON.stringify(this.selected)}`)
     let headers = new Headers({
       Authorization:
@@ -118,5 +120,44 @@ export class LoginPage {
                   {message: this.loginErrorString, duration: 3000, position: 'top'});
               toast.present();
             });
+  }
+
+  getAllTheUsersData() {
+    let user;
+
+    this.obp.api.getCurrentUser().subscribe((userData: any) => {
+      let users = JSON.parse(localStorage.getItem('users'));
+      users = users ? users : {};
+      users[userData.user_id] = userData;
+      localStorage.setItem('users', JSON.stringify(users));
+      user = userData;
+    });
+
+    this.obp.api.corePrivateAccountsAllBanks().subscribe((privateAccounts: any) => {
+      
+      let accounts = JSON.parse(localStorage.getItem('accounts'));
+      accounts = accounts ? accounts : {};
+
+      let transactions = JSON.parse(localStorage.getItem('transactions'));
+      transactions = transactions ? transactions : {};
+
+      for (let account of privateAccounts) {
+        accounts[account.id] = account;
+        accounts[account.id]['user_id'] = user.user_id;
+
+        this.obp.api.getTransactionsForBankAccount('owner', account.id, account.bank_id)
+            .subscribe(transactionsReturn => {
+              for(let transaction of transactionsReturn.transactions) {
+                transactions[transaction.id] = transaction;
+                transactions[transaction.id]['account_id'] = account.id;
+              }
+            });
+      }
+
+      localStorage.setItem('accounts', JSON.stringify(accounts));
+
+      localStorage.setItem('transactions', JSON.stringify(transactions));
+
+    });
   }
 }

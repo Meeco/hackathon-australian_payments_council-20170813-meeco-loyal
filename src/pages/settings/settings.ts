@@ -28,6 +28,7 @@ export class SettingsPage {
   subSettings: any = SettingsPage;
   user$: any;
   data: any = {};
+  localData: any = {};
 
   constructor(
       public navCtrl: NavController, public formBuilder: FormBuilder, public navParams: NavParams,
@@ -35,10 +36,12 @@ export class SettingsPage {
 
   ngOnInit() {
     this.user$ = this.obp.api.getCurrentUser();
+
+    //fresh data
     this.obp.api.getCurrentUser().subscribe(userData => {
       this.data.userData = userData;
     });
-    this.obp.api.corePrivateAccountsAllBanks().subscribe(privateAccounts => {
+    this.obp.api.corePrivateAccountsAllBanks().subscribe((privateAccounts: any) => {
       this.data.privateAccounts = privateAccounts;
       this.data.privateAccountTransactions = [];
       for (let account of this.data.privateAccounts) {
@@ -47,8 +50,17 @@ export class SettingsPage {
               this.data.privateAccountTransactions.push(...transactionsReturn.transactions);
             });
       }
-
     });
+
+    //local storage data
+    let accounts = JSON.parse(localStorage.getItem('accounts'));
+    this.localData.accounts = accounts ? accounts : {};
+    let transactions = JSON.parse(localStorage.getItem('transactions'));
+    this.localData.transactions = transactions ? transactions : {};
+    let users = JSON.parse(localStorage.getItem('users'));
+    this.localData.users = users ? users : {};
+
+
   }
 
   _buildForm() {
