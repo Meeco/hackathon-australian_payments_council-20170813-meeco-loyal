@@ -150,6 +150,7 @@ export class LoginPage {
               for(let transaction of transactionsReturn.transactions) {
                 transactions[transaction.id] = transaction;
                 transactions[transaction.id]['account_id'] = account.id;
+                transactions[transaction.id]['user_id'] = user.user_id;
               }
             });
       }

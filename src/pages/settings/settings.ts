@@ -1,16 +1,16 @@
-import {Component} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {TranslateService} from '@ngx-translate/core';
-import {NavController, NavParams} from 'ionic-angular';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { NavController, NavParams } from 'ionic-angular';
 
-import {OBP} from '../../providers/obp';
+import { OBP } from '../../providers/obp';
 
 /**
  * The Settings page is a simple form that syncs with a Settings provider
  * to enable the user to customize settings for the app.
  *
  */
-@Component({selector: 'page-settings', templateUrl: 'settings.html'})
+@Component({ selector: 'page-settings', templateUrl: 'settings.html' })
 export class SettingsPage {
   // Our local settings object
   options: any;
@@ -19,7 +19,7 @@ export class SettingsPage {
 
   form: FormGroup;
 
-  profileSettings = {page: 'profile', pageTitleKey: 'SETTINGS_PAGE_PROFILE'};
+  profileSettings = { page: 'profile', pageTitleKey: 'SETTINGS_PAGE_PROFILE' };
 
   page: string = 'main';
   pageTitleKey: string = 'SETTINGS_TITLE';
@@ -31,26 +31,32 @@ export class SettingsPage {
   localData: any = {};
 
   constructor(
-      public navCtrl: NavController, public formBuilder: FormBuilder, public navParams: NavParams,
-      public translate: TranslateService, public obp: OBP) {}
+    public navCtrl: NavController, public formBuilder: FormBuilder, public navParams: NavParams,
+    public translate: TranslateService, public obp: OBP) { }
 
   ngOnInit() {
     this.user$ = this.obp.api.getCurrentUser();
 
     //fresh data
+    this.data.privateAccountTransactions = [];
+    this.data.counterparties = [];
     this.obp.api.getCurrentUser().subscribe(userData => {
       this.data.userData = userData;
     });
     this.obp.api.corePrivateAccountsAllBanks().subscribe((privateAccounts: any) => {
       this.data.privateAccounts = privateAccounts;
-      this.data.privateAccountTransactions = [];
       for (let account of this.data.privateAccounts) {
         this.obp.api.getTransactionsForBankAccount('owner', account.id, account.bank_id)
-            .subscribe(transactionsReturn => {
-              this.data.privateAccountTransactions.push(...transactionsReturn.transactions);
-            });
+          .subscribe(transactionsReturn => {
+            this.data.privateAccountTransactions.push(...transactionsReturn.transactions);
+          });
+
+        this.obp.api.getCounterpartiesForAccount('owner', account.id, account.bank_id).subscribe((counterparitesReturn) => {
+          this.data.counterparties.push(...counterparitesReturn.counterparties);
+        });
       }
     });
+
 
     //local storage data
     let accounts = JSON.parse(localStorage.getItem('accounts'));
@@ -74,7 +80,7 @@ export class SettingsPage {
       case 'main':
         break;
       case 'profile':
-        group = {option4: [this.options.option4]};
+        group = { option4: [this.options.option4] };
         break;
     }
     this.form = this.formBuilder.group(group);
