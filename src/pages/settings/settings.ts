@@ -45,7 +45,7 @@ export class SettingsPage {
   user$: any;
   entitlements$: any;
 
-  transactions$: any;
+  domains$: any;
   data: any = {};
   localData: any = {};
   transactionsArray: any = [];
@@ -61,7 +61,7 @@ export class SettingsPage {
       user_id
     }) => this.obp.api.getEntitlements(user_id));
 
-    this.transactions$ =
+    this.domains$ =
       this.obp.api.corePrivateAccountsAllBanks()
       .switchMap((accts: any) => {
         return combineLatest(accts.map((acct) => {
@@ -112,7 +112,7 @@ export class SettingsPage {
         }));
       });
 
-      this.transactions$.subscribe(() => {
+      this.domains$.subscribe(() => {
         this.loading = false;
       });
   }
