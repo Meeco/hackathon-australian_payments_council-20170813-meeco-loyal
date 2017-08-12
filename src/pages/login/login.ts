@@ -79,7 +79,6 @@ export class LoginPage {
   // The account fields for the login form.
   // If you're using the username field with or without email, make
   // sure to add it to the type
-  account: {email: string, password: string} = {email: 'Robert.Anz.01', password: 'X!f98b6237'};
 
   // Our translated text strings
   private loginErrorString: string;
@@ -94,12 +93,13 @@ export class LoginPage {
 
   // Attempt to login in through our User service
   doLogin() {
+    console.log(`the selected customer is ${JSON.stringify(this.selected)}`)
     let headers = new Headers({
       Authorization:
           `DirectLogin username="${
-                                   this.account.email
+                                   this.selected.user_name
                                  }",   password="${
-                                                   this.account.password
+                                                   this.selected.password
                                                  }",  consumer_key="nsarsbud0jyhx5oxawfqh0xnl3405tt0jb4y3nak"`
     });
     this.http.post('https://apc.openbankproject.com/my/logins/direct', {}, {headers})
