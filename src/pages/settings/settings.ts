@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams } from 'ionic-angular';
+import 'rxjs/add/operator/switchMap';
+
+import {Component} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {TranslateService} from '@ngx-translate/core';
+import {NavController, NavParams} from 'ionic-angular';
+import {combineLatest} from 'rxjs/observable/combineLatest';
 
 import { OBP } from '../../providers/obp';
 
@@ -27,6 +30,7 @@ export class SettingsPage {
 
   subSettings: any = SettingsPage;
   user$: any;
+  transactions$: any;
   data: any = {};
   localData: any = {};
 
@@ -67,6 +71,23 @@ export class SettingsPage {
     this.localData.users = users ? users : {};
 
 
+    this.transactions$ =
+        this.obp.api.corePrivateAccountsAllBanks()
+            .switchMap((accts: any) => {
+              return combineLatest(accts.map((acct) => {
+                return this.obp.api.getTransactionsForBankAccount('owner', acct.id, acct.bank_id);
+              }));
+            })
+            .map(transactions => {
+              let txs = transactions.map(({transactions}) => transactions)
+                            .reduce((a, b) => a.concat(b))
+                            .reduce((a, b) => {
+                              a[b.other_account.metadata.URL] =
+                                  [...a[b.other_account.metadata.URL] || [], b];
+                              return a;
+                            }, {});
+              return txs;
+            });
   }
 
   _buildForm() {
