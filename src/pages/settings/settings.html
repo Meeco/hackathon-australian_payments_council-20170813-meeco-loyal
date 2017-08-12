@@ -7,6 +7,14 @@
 </ion-header>
 
 <ion-content>
+
+  <ion-grid>
+    <ion-row *ngFor="let tx of transactions$ | async">
+      <ion-col col-4>{{ tx[0] }} $ {{total(tx[1])}}</ion-col>
+
+    </ion-row>
+  </ion-grid>
+
   <h1>FRESH DATA</h1>
   <pre>{{user$ | async | json}}</pre>
   <pre>{{transactions$ | async | json}}</pre>

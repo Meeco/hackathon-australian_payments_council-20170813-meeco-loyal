@@ -1,19 +1,19 @@
 import 'rxjs/add/operator/switchMap';
 
-import {Component} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {TranslateService} from '@ngx-translate/core';
-import {NavController, NavParams} from 'ionic-angular';
-import {combineLatest} from 'rxjs/observable/combineLatest';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { NavController, NavParams } from 'ionic-angular';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 
-import {OBP} from '../../providers/obp';
+import { OBP } from '../../providers/obp';
 
 /**
  * The Settings page is a simple form that syncs with a Settings provider
  * to enable the user to customize settings for the app.
  *
  */
-@Component({selector: 'page-settings', templateUrl: 'settings.html'})
+@Component({ selector: 'page-settings', templateUrl: 'settings.html' })
 export class SettingsPage {
   // Our local settings object
   options: any;
@@ -22,7 +22,7 @@ export class SettingsPage {
 
   form: FormGroup;
 
-  profileSettings = {page: 'profile', pageTitleKey: 'SETTINGS_PAGE_PROFILE'};
+  profileSettings = { page: 'profile', pageTitleKey: 'SETTINGS_PAGE_PROFILE' };
 
   page: string = 'main';
   pageTitleKey: string = 'SETTINGS_TITLE';
@@ -34,9 +34,11 @@ export class SettingsPage {
   data: any = {};
   localData: any = {};
 
+  transactionsArray: any = [];
+
   constructor(
-      public navCtrl: NavController, public formBuilder: FormBuilder, public navParams: NavParams,
-      public translate: TranslateService, public obp: OBP) {}
+    public navCtrl: NavController, public formBuilder: FormBuilder, public navParams: NavParams,
+    public translate: TranslateService, public obp: OBP) { }
 
   ngOnInit() {
     this.user$ = this.obp.api.getCurrentUser();
@@ -51,24 +53,34 @@ export class SettingsPage {
 
 
     this.transactions$ =
-        this.obp.api.corePrivateAccountsAllBanks()
-            .switchMap((accts: any) => {
-              return combineLatest(accts.map((acct) => {
-                return this.obp.api.getTransactionsForBankAccount('owner', acct.id, acct.bank_id);
-              }));
-            })
-            .map(transactions => {
-              let txs = transactions.map(({transactions}) => transactions)
-                            .reduce((a, b) => a.concat(b))
-                            .reduce((a, b) => {
-                              a[b.other_account.metadata.URL] =
-                                  [...a[b.other_account.metadata.URL] || [], b];
-                              return a;
-                            }, {});
-              return txs;
-            });
-  }
+      this.obp.api.corePrivateAccountsAllBanks()
+        .switchMap((accts: any) => {
+          return combineLatest(accts.map((acct) => {
+            return this.obp.api.getTransactionsForBankAccount('owner', acct.id, acct.bank_id);
+          }));
+        })
+        .map(transactions => {
+          let txs = transactions.map(({ transactions }) => transactions)
+            .reduce((a, b) => a.concat(b))
+            .reduce((a, b) => {
+              a[b.other_account.metadata.URL] =
+                [...a[b.other_account.metadata.URL] || [], b];
+              return a;
+            }, {});
+          return Object.keys(txs).map((key) => {
+            let tx = txs[key]
+            return [key, tx];
+          });
 
+        });
+  }
+  total(vals: any[]) {
+    debugger;
+    return vals.reduce((a, b) => {
+      let c = a + +b.details.value.amount;
+      return c;
+    }, 0)
+  }
   _buildForm() {
     let group: any = {
       option1: [this.options.option1],
@@ -80,7 +92,7 @@ export class SettingsPage {
       case 'main':
         break;
       case 'profile':
-        group = {option4: [this.options.option4]};
+        group = { option4: [this.options.option4] };
         break;
     }
     this.form = this.formBuilder.group(group);
