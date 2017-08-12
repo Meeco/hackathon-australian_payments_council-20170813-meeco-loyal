@@ -8,7 +8,29 @@
 
 
 <ion-content>
-  <ion-searchbar (ionInput)="getItems($event)" placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"></ion-searchbar>
+  <ion-item>
+    <ion-label>Counterparties</ion-label>
+    <ion-select name="counterparty" [(ngModel)]="selected">
+      <ion-option *ngFor="let counterparty of counterparties" [value]="counterparty">{{counterparty.URL}}</ion-option>
+    </ion-select>
+  </ion-item>
+
+     <!-- <pre>{{getList() | json}}</pre>    -->
+ 
+  <ion-list>
+    <button ion-item *ngFor="let item of getList()">
+      <!-- <ion-avatar item-start>
+        <img [src]="item.profilePic" />
+      </ion-avatar> -->
+      <h2>{{item.user.username}}</h2>
+      <p>{{item.amount}}</p>
+      <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
+    </button>
+  </ion-list> 
+
+
+
+  <!-- <ion-searchbar (ionInput)="getItems($event)" placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"></ion-searchbar>
   <ion-list>
     <button ion-item (click)="openItem(item)" *ngFor="let item of currentItems">
       <ion-avatar item-start>
@@ -18,5 +40,5 @@
       <p>{{item.about}}</p>
       <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
     </button>
-  </ion-list>
+  </ion-list> -->
 </ion-content>
