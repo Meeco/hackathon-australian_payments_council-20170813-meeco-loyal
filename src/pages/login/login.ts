@@ -95,7 +95,6 @@ export class LoginPage {
 
   // Attempt to login in through our User service
   doLogin() {
-    this.getAllTheUsersData();
     let headers = new Headers({
       Authorization:
       `DirectLogin username="${
@@ -111,6 +110,7 @@ export class LoginPage {
         let { token } = resp;
         localStorage.setItem('Authorization', `DirectLogin token="${token}"`);
         this.navCtrl.push(MainPage);
+        this.getAllTheUsersData();
       },
       (err) => {
 
