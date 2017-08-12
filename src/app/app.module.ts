@@ -1,3 +1,4 @@
+
 import {ErrorHandler, NgModule} from '@angular/core';
 import {Http} from '@angular/http';
 import {RouterModule} from '@angular/router';
@@ -8,7 +9,7 @@ import {StatusBar} from '@ionic-native/status-bar';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
 import {TranslateLoader} from '@ngx-translate/core';
-import {Configuration} from '@obp/sdk';
+import {BASE_PATH, Configuration} from '@obp/sdk';
 import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 
 import {Items} from '../mocks/providers/items';
@@ -58,7 +59,8 @@ export function providers() {
   return [
     Api, Items, User, Camera, GoogleMaps, SplashScreen, StatusBar, OBP,
     // Keep this to enable Ionic's runtime error handling during development
-    {provide: ErrorHandler, useClass: IonicErrorHandler}, {
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    {provide: BASE_PATH, useValue: 'https://apc.openbankproject.com/obp/v3.0.0'}, {
       provide: Configuration,
       useFactory: () => {
         return new Configuration({

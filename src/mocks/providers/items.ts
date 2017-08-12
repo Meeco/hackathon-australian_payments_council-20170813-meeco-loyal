@@ -6,16 +6,10 @@ import {OBP} from '../../providers/obp';
 
 @Injectable()
 export class Items {
-  constructor(public api: OBP) {
-    this.api.api13;
-    this.api.api14;
-    this.api.api20;
-    this.api.api21;
-    this.api.api22;
-  }
+  constructor(public api: OBP) {}
 
   query(params?: any) {
-    return this.api.api12.func121GetBanks();
+    return this.api.api.getBanks();
   }
 
   add(item: Item) {}

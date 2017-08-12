@@ -32,23 +32,24 @@ export class SettingsPage {
   constructor(
       public navCtrl: NavController, public formBuilder: FormBuilder, public navParams: NavParams,
       public translate: TranslateService, public obp: OBP) {}
-  
-  ngOnInit(){
-    this.user$ = this.obp.api20.func200GetCurrentUser()
-    this.obp.api20.func200GetCurrentUser().subscribe(userData => {
+
+  ngOnInit() {
+    this.user$ = this.obp.api.getCurrentUser();
+    this.obp.api.getCurrentUser().subscribe(userData => {
       this.data.userData = userData;
     });
-    this.obp.api3.func300CorePrivateAccountsAllBanks().subscribe(privateAccounts => {
-      this.data.privateAccounts = privateAccounts as any[];
+    this.obp.api.corePrivateAccountsAllBanks().subscribe(privateAccounts => {
+      this.data.privateAccounts = privateAccounts;
       this.data.privateAccountTransactions = [];
-      for(let account of this.data.privateAccounts) {
-        this.obp.api3.func300GetTransactionsForBankAccount('owner', account.id, account.bank_id).subscribe(transactionsReturn => {
-          this.data.privateAccountTransactions.push(...transactionsReturn.transactions);
-        });
+      for (let account of this.data.privateAccounts) {
+        this.obp.api.getTransactionsForBankAccount('owner', account.id, account.bank_id)
+            .subscribe(transactionsReturn => {
+              this.data.privateAccountTransactions.push(...transactionsReturn.transactions);
+            });
       }
 
     });
-  } 
+  }
 
   _buildForm() {
     let group: any = {
