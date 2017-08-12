@@ -41,8 +41,9 @@ export class SearchPage {
     });
   }
 
-  getCounterparties() {
-    let transactions = JSON.parse(localStorage.getItem('transactions'));
-  }
+  // getCounterparties() {
+  //   let transactions = JSON.parse(localStorage.getItem('transactions'));
+    
+  // }
 
 }
