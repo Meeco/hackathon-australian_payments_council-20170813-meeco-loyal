@@ -69,6 +69,8 @@ export class SettingsPage {
     this.localData.transactions = transactions ? transactions : {};
     let users = JSON.parse(localStorage.getItem('users'));
     this.localData.users = users ? users : {};
+    let counterparties = JSON.parse(localStorage.getItem('counterparties'));
+    this.localData.counterparties = counterparties ? counterparties : {};
 
 
     this.transactions$ =

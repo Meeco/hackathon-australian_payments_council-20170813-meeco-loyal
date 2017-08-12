@@ -129,6 +129,8 @@ export class LoginPage {
     storageAccounts = storageAccounts ? storageAccounts : {};
     let storageTransactions = JSON.parse(localStorage.getItem('transactions'));
     storageTransactions = storageTransactions ? storageTransactions : {};
+    let storageCounterparties = JSON.parse(localStorage.getItem('counterparties'));
+    storageCounterparties = storageCounterparties ? storageCounterparties : {};
 
     //get user data
     let userData = <any> await this.obp.api.getCurrentUser().toPromise();
@@ -158,12 +160,28 @@ export class LoginPage {
           .toPromise()
       );
     }
+    let transactions = [];
     let transactionArrays = await Promise.all(transactionRequestPromises);
     for(let transactionArray of transactionArrays) {
       for(let transaction of transactionArray) {
         storageTransactions[transaction.id] = transaction;
+        transactions.push(transaction);
       }
     }
     localStorage.setItem('transactions', JSON.stringify(storageTransactions));
+    console.log('saved all the transactions')
+
+    //get all counterparties
+    for(let transaction of transactions) {
+      let otherAccount = transaction.other_account;
+      console.log(`url is ${JSON.stringify(otherAccount.metadata.URL)}`)
+      if(otherAccount.metadata.URL) {
+        if(otherAccount.metadata.URL && !storageCounterparties[otherAccount.metadata.URL]) {
+          storageCounterparties[otherAccount.metadata.URL] = {accounts:{}}
+        }
+        storageCounterparties[otherAccount.metadata.URL]['accounts'][otherAccount.id] = otherAccount;
+      }      
+    }
+    localStorage.setItem('counterparties', JSON.stringify(storageCounterparties));
   }
 }
