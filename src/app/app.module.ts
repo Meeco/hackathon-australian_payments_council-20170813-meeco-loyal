@@ -34,6 +34,8 @@ import {Api} from '../providers/api';
 import {OBP} from '../providers/obp';
 import {User} from '../providers/user';
 import {reducer} from '../reducers';
+import {CategorySortPipe} from '../shared/category-sort.pipe';
+import {URLPipe} from '../shared/url.pipe';
 
 import {App} from './app.component';
 
@@ -47,17 +49,13 @@ let pages = [
   MenuPage, SearchPage, SettingsPage, SignupPage, TabsPage, TutorialPage, WelcomePage
 ];
 
-export function declarations() {
-  return pages;
-}
-
 export function entryComponents() {
   return pages;
 }
 
 export function providers() {
   return [
-    Api, Items, User, Camera, GoogleMaps, SplashScreen, StatusBar, OBP,
+    Api, Items, User, Camera, GoogleMaps, SplashScreen, StatusBar, OBP, 
     // Keep this to enable Ionic's runtime error handling during development
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: BASE_PATH, useValue: 'https://apc.openbankproject.com/obp/v3.0.0'}, {
@@ -76,7 +74,7 @@ export function providers() {
 }
 
 @NgModule({
-  declarations: declarations(),
+  declarations: [...pages, CategorySortPipe, URLPipe],
   imports: [
     IonicModule.forRoot(App),
     SharedModule,
