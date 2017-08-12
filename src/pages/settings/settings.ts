@@ -49,6 +49,7 @@ export class SettingsPage {
   data: any = {};
   localData: any = {};
   transactionsArray: any = [];
+  loading: boolean = true;
 
   constructor(
     public navCtrl: NavController, public formBuilder: FormBuilder, public navParams: NavParams,
@@ -60,7 +61,6 @@ export class SettingsPage {
       user_id
     }) => this.obp.api.getEntitlements(user_id));
 
-    let words = ['rewards', 'reward', 'loyalty', 'points', 'point'];
     this.transactions$ =
       this.obp.api.corePrivateAccountsAllBanks()
       .switchMap((accts: any) => {
@@ -81,7 +81,7 @@ export class SettingsPage {
           }) => transactions)
           .reduce((a, b) => a.concat(b))
           .reduce((a, b) => {
-            console.log(b);
+            // console.log(b);
             a[b.other_account.metadata.URL] = [...a[b.other_account.metadata.URL] || [], b];
             return a;
           }, {});
@@ -111,11 +111,15 @@ export class SettingsPage {
             });
         }));
       });
+
+      this.transactions$.subscribe(() => {
+        this.loading = false;
+      });
   }
 
   open(domain: string, links: string[]) {
     links.forEach((link) => {
-      console.log(link);
+      // console.log(link);
       if (link[0] === '/') {
         window.open(domain + link);
         return;

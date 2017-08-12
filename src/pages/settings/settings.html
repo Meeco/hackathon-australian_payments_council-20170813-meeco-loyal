@@ -2,29 +2,29 @@
   <ion-navbar>
     <ion-title>Loyalty</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-<ion-content>
-
-  <ion-grid>
+<ion-content padding>
+  <div *ngIf="loading">
+    <p>Searching for Loyalty programs...</p>
+    <ion-spinner></ion-spinner>
+  </div>
+  <!-- <ion-grid>
     <ion-row *ngFor="let tx of transactions$ | async">
       <ion-col col-4>{{ tx[0] }}</ion-col>
       <ion-col col-4>${{total(tx[1])}}</ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-grid> -->
 
-  <h1>FRESH DATA</h1>
-  <pre>{{user$ | async | json}}</pre>
-  <pre>{{entitlements$ | async | json}}</pre>
+  <!-- <pre>{{entitlements$ | async | json}}</pre> -->
   <!-- <pre>{{transactions$ | async | json}}</pre> -->
-  <div *ngFor="let domain of transactions$ | async">
-    <p *ngIf="domain[1].length > 0">
-    There are <button (click)="open(domain[0], domain[1])">{{domain[1].length}}</button> offers available for <a target="_blank"
-      [href]="domain[0]">{{domain[0]}}</a> <br>
-    </p>
-  </div>
-  <h1>LOCAL STORAGE DATA</h1>
-  <pre>{{localData | json}}</pre>
+  <ion-list>
+    <div *ngFor="let domain of transactions$ | async">
+      <ion-item *ngIf="domain[1].length > 0">
+        There are <button (click)="open(domain[0], domain[1])">{{domain[1].length}}</button> offers available for <a target="_blank"
+          [href]="domain[0]">{{domain[0]}}</a> <br>
+      </ion-item>
+    </div>
+  </ion-list>
 
 </ion-content>
