@@ -75,7 +75,6 @@ export class SettingsPage {
         });
   }
   total(vals: any[]) {
-    debugger;
     return vals.reduce((a, b) => {
       let c = a + +b.details.value.amount;
       return c;

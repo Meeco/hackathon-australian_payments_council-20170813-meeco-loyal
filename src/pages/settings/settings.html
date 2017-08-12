@@ -10,8 +10,8 @@
 
   <ion-grid>
     <ion-row *ngFor="let tx of transactions$ | async">
-      <ion-col col-4>{{ tx[0] }} $ {{total(tx[1])}}</ion-col>
-
+      <ion-col col-4>{{ tx[0] }}</ion-col>
+      <ion-col col-4>${{total(tx[1])}}</ion-col>
     </ion-row>
   </ion-grid>
 
