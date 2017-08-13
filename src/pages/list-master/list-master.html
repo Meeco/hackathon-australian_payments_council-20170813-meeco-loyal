@@ -12,14 +12,14 @@
     <img src="../../assets/img/Meeco Logo.png" alt="Meeco Logo" style="max-width: 75px">
   </div>
   <div *ngIf="loading">
-    <p>Searching for Loyalty programs...</p>
+    <p style="color: white;">Searching for Loyalty programs...</p>
     <div class="the-spinner" padding>
       <ion-spinner></ion-spinner>
     </div>
   </div>
 
-  <div padding>
-      {{message}}
+  <div style="color: white;" padding>
+    {{message}}
   </div>
   <ion-list>
     <div *ngFor="let domain of domains$ | async">
