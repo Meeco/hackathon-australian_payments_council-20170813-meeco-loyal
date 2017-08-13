@@ -11,7 +11,14 @@ page-login {
   .item-select .label-md {
     color: white;
   }
-  .card-md {
-    opacity: .85;
+
+
+  ion-item {
+    border-color: white !important;
+    box-shadow: none !important;
+    .item-inner {
+      border-color: white !important;
+      box-shadow: none !important;
+    }
   }
 }
