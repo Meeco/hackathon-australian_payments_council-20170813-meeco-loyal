@@ -16,7 +16,7 @@
         <ion-item>
           <b>{{domain[0]}}</b><br/>
           <div class="offer">
-              <ion-badge color="secondary" margin-right>{{domain[1].length}} Offers</ion-badge>
+              <ion-badge color="secondary">{{domain[1].length}} Offers</ion-badge>
               <button ion-button [disabled]="domain[1].length == 0" (click)="open(domain[0], domain[1])">Join</button>            
           </div>
         </ion-item>
