@@ -18,6 +18,19 @@
 ion-app {
   background-image: url("../assets/img/default-background.jpg");
   background-size: cover;
+
+  .item-md {
+    background: transparent;
+  }
+  .item-input .label-md {
+    color: white;
+  }
+  .content-md {
+    background: transparent;
+  }
+  .item-select .label-md {
+    color: white;
+  }
 }
 
 .button-md {
