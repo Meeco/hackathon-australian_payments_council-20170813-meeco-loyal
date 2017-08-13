@@ -46,8 +46,7 @@ export class App {
     { title: 'Cards', component: CardsPage },
     { title: 'Login', component: LoginPage },
     { title: 'About', component: MapPage },
-    { title: 'Master Detail', component: ListMasterPage }, { title: 'Menu', component: MenuPage },
-    { title: 'Settings', component: SettingsPage }, { title: 'Search', component: SearchPage },
+    { title: 'Loyalty', component: ListMasterPage },
     { title: 'MerchantLogin', component: MerchantLoginPage }
   ]
 
