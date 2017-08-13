@@ -9,19 +9,20 @@
 
 <ion-content>
   <ion-item>
-    <ion-label>Counterparties</ion-label>
+    <ion-label>Merchant</ion-label>
     <ion-select name="counterparty" [(ngModel)]="selected">
       <ion-option *ngFor="let counterparty of counterparties" [value]="counterparty">{{counterparty.URL}}</ion-option>
     </ion-select>
   </ion-item>
+  <h1>{{selected.URL}}</h1>
 
      <!-- <pre>{{getList() | json}}</pre>    -->
  
   <ion-list>
     <button ion-item *ngFor="let item of getList()">
-      <!-- <ion-avatar item-start>
-        <img [src]="item.profilePic" />
-      </ion-avatar> -->
+       <ion-avatar item-start>
+        <img [src]="item.user.picture.thumbnail" />
+      </ion-avatar> 
       <h2>{{item.user.username}}</h2>
       <p>{{item.amount}}</p>
       <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
