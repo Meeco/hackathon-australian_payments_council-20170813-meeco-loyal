@@ -11,6 +11,10 @@ page-map {
   .item-select .label-md {
     color: white;
   }
-  //opacity: 0;
-  //transition: opacity 150ms ease-in
+
+  .card-md {
+  opacity: .85;
+  transition: opacity 150ms ease-in
+  }
+
 }
