@@ -21,9 +21,9 @@
   <ion-list>
     <button ion-item *ngFor="let item of getList()">
        <ion-avatar item-start>
-        <img [src]="item.user.picture.thumbnail" />
+        <img [src]="item?.user?.picture?.thumbnail" />
       </ion-avatar> 
-      <h2>{{item.user.username}}</h2>
+      <h2>{{item?.user?.name?.first}} {{item?.user?.name?.last}}</h2>
       <p>{{item.amount}}</p>
       <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
     </button>

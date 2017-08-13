@@ -37,6 +37,7 @@ import {User} from '../providers/user';
 import {reducer} from '../reducers';
 import {CategorySortPipe} from '../shared/category-sort.pipe';
 import {URLPipe} from '../shared/url.pipe';
+import { IonicStorageModule } from '@ionic/storage';
 
 import {App} from './app.component';
 
@@ -85,6 +86,7 @@ export function providers() {
     RouterModule.forRoot([]),
     MultilingualModule.forRoot(
         [{provide: TranslateLoader, deps: [Http], useFactory: (translateLoaderFactory)}]),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: entryComponents(),

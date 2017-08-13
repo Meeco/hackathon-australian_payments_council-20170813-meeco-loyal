@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {Headers, Http} from '@angular/http';
 import {TranslateService} from '@ngx-translate/core';
 import {NavController, ToastController} from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 import { MainPage } from '../../pages/pages';
 import { MerchantLoginPage } from "../../pages/merchant-login/merchant-login";
@@ -24,7 +25,8 @@ export class LoginPage {
 
   constructor(
       public navCtrl: NavController, public user: User, public toastCtrl: ToastController,
-      public translateService: TranslateService, public http: Http, public obp: OBP){
+      public translateService: TranslateService, public http: Http, public obp: OBP,
+      private storage: Storage){
 
       this.translateService.get('LOGIN_ERROR').subscribe((value) => {
         this.loginErrorString = value;
@@ -66,8 +68,9 @@ export class LoginPage {
   async loadAllUserData() {
     this.loadingAllUserData = true;
     for (let user of this.users) {
+      this.selected = user;
       console.log(`getting data for ${user.user_name}`);
-      let {token} = await this.loginToLoadData();
+      let {token} = await this.loginToLoadData(user);
       localStorage.setItem('Authorization', `DirectLogin token="${token}"`);
       await this.getAllTheUsersData();
     }
@@ -75,7 +78,7 @@ export class LoginPage {
     this.loadingAllUserData = false;
   }
 
-  loginToLoadData() {
+  loginToLoadData(user) {
     let headers = new Headers({
       Authorization:
           `DirectLogin username="${
@@ -90,13 +93,22 @@ export class LoginPage {
   }
 
   async getAllTheUsersData() {
-    let storageUsers = JSON.parse(localStorage.getItem('users'));
+    // let storageUsers = JSON.parse(localStorage.getItem('users'));
+    let storageUsers = await this.storage.get('users');
     storageUsers = storageUsers ? storageUsers : {};
-    let storageAccounts = JSON.parse(localStorage.getItem('accounts'));
+    
+
+    // let storageAccounts = JSON.parse(localStorage.getItem('accounts'));
+    let storageAccounts = await this.storage.get('accounts');
     storageAccounts = storageAccounts ? storageAccounts : {};
-    let storageTransactions = JSON.parse(localStorage.getItem('transactions'));
+
+    // let storageTransactions = JSON.parse(localStorage.getItem('transactions'));
+    let storageTransactions = await this.storage.get('transactions');
     storageTransactions = storageTransactions ? storageTransactions : {};
-    let storageCounterparties = JSON.parse(localStorage.getItem('counterparties'));
+
+    
+    // let storageCounterparties = JSON.parse(localStorage.getItem('counterparties'));
+    let storageCounterparties = await this.storage.get('counterparties');
     storageCounterparties = storageCounterparties ? storageCounterparties : {};
 
     // get user data
@@ -109,6 +121,7 @@ export class LoginPage {
     });
     Object.assign(storageUsers[userData.user_id], userDataFromMock);
     // console.log(`about to save ${JSON.stringify(storageUsers[userData.user_id])}`)
+    this.storage.set('users', storageUsers);
     localStorage.setItem('users', JSON.stringify(storageUsers));
 
     // get all private accounts
@@ -117,7 +130,8 @@ export class LoginPage {
       storageAccounts[account.id] = account;
       storageAccounts[account.id]['user_id'] = userData.user_id;
     }
-    localStorage.setItem('accounts', JSON.stringify(storageAccounts));
+    this.storage.set('accounts', storageAccounts);
+    // localStorage.setItem('accounts', JSON.stringify(storageAccounts));
 
     // get all transactions
     let transactionRequestPromises = [];
@@ -141,8 +155,8 @@ export class LoginPage {
         transactions.push(transaction);
       }
     }
-    localStorage.setItem('transactions', JSON.stringify(storageTransactions));
-    console.log('saved all the transactions')
+    this.storage.set('transactions', storageTransactions);
+    // localStorage.setItem('transactions', JSON.stringify(storageTransactions));
 
     // get all counterparties
     for (let transaction of transactions) {
@@ -158,7 +172,8 @@ export class LoginPage {
             otherAccount;
       }
     }
-    localStorage.setItem('counterparties', JSON.stringify(storageCounterparties));
+    this.storage.set('counterparties', storageCounterparties);
+    // localStorage.setItem('counterparties', JSON.stringify(storageCounterparties));
     console.log(`grabbed everything for that user...`)
   }
 }

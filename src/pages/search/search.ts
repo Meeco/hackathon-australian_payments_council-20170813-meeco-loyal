@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 import { ItemDetailPage } from '../item-detail/item-detail';
 
@@ -19,7 +20,8 @@ export class SearchPage implements OnInit{
   transactions = [];
   selected = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public items: Items) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public items: Items, 
+    private storage: Storage) {
     this.selected = JSON.parse(localStorage.getItem('LoggedInMerchant'));
   }
 
@@ -53,9 +55,11 @@ export class SearchPage implements OnInit{
   }
 
   getList() {
+    let self = this;
     let userList = {};
     if(this.selected) {
       for(let transaction of this.transactions) {
+
 
         if(transaction.other_account.metadata.URL === this.selected.URL) {
           if(!userList[transaction.user_id]) {
@@ -80,19 +84,22 @@ export class SearchPage implements OnInit{
     });
   }
 
-  getCounterparties() {
-    let counterparties = JSON.parse(localStorage.getItem('counterparties'));
+  async getCounterparties() {
+    let counterparties = await this.storage.get('counterparties');
+    // let counterparties = JSON.parse(localStorage.getItem('counterparties'));
     this.counterparties = Object.keys(counterparties).map(function(key) {
       return counterparties[key];
     });
   }
 
-  getUsers() {
-    this.users = JSON.parse(localStorage.getItem('users'));
+  async getUsers() {
+    this.users = await this.storage.get('users');
+    // this.users = JSON.parse(localStorage.getItem('users'));
   }
 
-  getTransactions() {
-    let transactions = JSON.parse(localStorage.getItem('transactions'));
+  async getTransactions() {
+    let transactions = await this.storage.get('transactions');
+    // let transactions = JSON.parse(localStorage.getItem('transactions'));
     this.transactions = Object.keys(transactions).map(function(key) {
       return transactions[key];
     });
