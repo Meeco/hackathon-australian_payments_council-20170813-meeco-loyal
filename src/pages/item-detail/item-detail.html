@@ -10,24 +10,45 @@
 <ion-content>
   <ion-list>
     <ion-list-header>
-      Loyalty Program
+      Loyalty Program {{exists ? 'Available' : 'Not Available'}}
     </ion-list-header>
+
     <button ion-item (click)="open(merchant)">{{ merchant }}</button>
+    <ion-item *ngIf="!exists">
+      <p>Select program to view potenital missed points. </p>
+    </ion-item>
+    <ion-item *ngIf="!exists">
+      <ion-label>Comparison Data</ion-label>
+      <ion-select [(ngModel)]="compare">
+        <ion-option [value]="x" *ngFor="let x of conversions">{{x.merchant}}</ion-option>
+      </ion-select>
+    </ion-item>
+
     <ion-list-header>
       Point Conversion.
     </ion-list-header>
-    <ion-item>
+    <ion-item *ngIf="exists">
       <p><span float-left>Total Spend:</span>
         <span float-right> &#36;{{total}}</span>
       </p>
       <p><span float-left>Total Point:</span><span float-right> {{floor(total * conversion)}} pts</span></p>
     </ion-item>
-    <ion-list-header>
+    <ion-item *ngIf="compare">
+      <p><span float-left>Total Spend:</span>
+        <span float-right> &#36;{{total}}</span>
+      </p>
+      <p><span float-left>Total Point:</span><span float-right> {{floor(total * compare.rate)}} pts</span></p>
+    </ion-item>
+    <ion-list-header *ngIf="exists">
       Available Offers.
     </ion-list-header>
-    <button ion-item *ngFor="let offer of offers; let i = index;" (click)="open(offer)">
+    <button ion-item *ngFor="let offer of (exists ? offers : []); let i = index;" (click)="open(offer)">
         <span float-left>{{ mock[i].title }}</span><span float-right>{{mock[i].points}}</span>
     </button>
   </ion-list>
-  <button ion-button large color="primary">JOIN NOW!</button>
+  <div class="join-now" padding>
+    <button ion-button large color="primary" [disabled]="!exists">JOIN NOW!</button>
+  </div>
+  <p *ngIf="exists">Full Disclosure... If you join we get $1.25 as an affiliate marketer.</p>
+  <p *ngIf="!exists">These purchases are not eligible for any rewards program.</p>
 </ion-content>

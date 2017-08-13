@@ -5,21 +5,28 @@
 </ion-header>
 
 <ion-content>
-    <ion-list>
-      <ion-item *ngFor="let cat of categories | categorySort">
-        <h1>{{cat[0]}}</h1>
-        <ion-grid>
-          <ion-row>
-            <ion-col text-left><b>Merchant</b></ion-col>
-            <ion-col text-right><b>Spend</b></ion-col>
-            <ion-col text-right><b>Points per dollar</b></ion-col>
-          </ion-row>
-          <ion-row *ngFor="let merchant of cat[1]">
-            <ion-col text-left>{{merchant.metadata.URL | url}}</ion-col>
-            <ion-col text-right>$ {{merchantSpend(merchant.metadata.URL)}}</ion-col>
-            <ion-col text-right>{{merchant.pointsPerDollar}}</ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-item>
-    </ion-list>
+  <div class="logo-holder" style="text-align: center">
+    <br>
+    <br>
+    <img src="../../assets/img/Meeco Logo.png" alt="Meeco Logo" style="max-width: 75px">
+  </div>
+
+
+  <ion-list>
+    <ion-item *ngFor="let cat of categories | categorySort">
+      <h1>{{cat[0]}}</h1>
+      <ion-grid>
+        <ion-row>
+          <ion-col text-left><b>Merchant</b></ion-col>
+          <ion-col text-right><b>Spend</b></ion-col>
+          <ion-col text-right><b>Points per dollar</b></ion-col>
+        </ion-row>
+        <ion-row *ngFor="let merchant of cat[1]">
+          <ion-col text-left>{{merchant.metadata.URL | url}}</ion-col>
+          <ion-col text-right>$ {{merchantSpend(merchant.metadata.URL)}}</ion-col>
+          <ion-col text-right>{{merchant.pointsPerDollar}}</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
 </ion-content>
