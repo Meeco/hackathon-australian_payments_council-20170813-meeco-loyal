@@ -1,28 +1,33 @@
 <ion-header>
-    <ion-navbar>
-      <ion-title>Loyalty</ion-title>
-    </ion-navbar>
-  </ion-header>
-  
-  <ion-content padding>
-    <div *ngIf="loading">
-      <p>Searching for Loyalty programs...</p>
-      <ion-spinner></ion-spinner>
-    </div>
+  <ion-navbar>
+    <ion-title>Loyalty</ion-title>
+  </ion-navbar>
+</ion-header>
 
-    {{message}}
-    <ion-list>
-      <div *ngFor="let domain of domains$ | async">
-        <ion-item>
-          <b>{{domain[0]}}</b><br/>
-          <div class="offer">
-              <ion-badge color="secondary" *ngIf="domain[1].length > 0">{{domain[1].length}} Offers</ion-badge>
-              <button ion-button *ngIf="domain[1].length > 0" (click)="open(domain[0], domain[1])">Join</button>            
-              <button ion-button *ngIf="domain[1].length == 0" (click)="open(domain[0], domain[1])">Compare</button>
-          </div>
-        </ion-item>
-      </div>
-    </ion-list>
-  
-  </ion-content>
-  
+<ion-content padding>
+
+  <div class="logo-holder" style="text-align: center">
+    <br>
+    <br>
+    <img src="../../assets/img/Meeco Logo.png" alt="Meeco Logo" style="max-width: 100px">
+  </div>
+  <div *ngIf="loading">
+    <p>Searching for Loyalty programs...</p>
+    <ion-spinner></ion-spinner>
+  </div>
+
+  {{message}}
+  <ion-list>
+    <div *ngFor="let domain of domains$ | async">
+      <ion-item>
+        <b>{{domain[0]}}</b><br/>
+        <div class="offer">
+          <ion-badge color="secondary" *ngIf="domain[1].length > 0">{{domain[1].length}} Offers</ion-badge>
+          <button ion-button *ngIf="domain[1].length > 0" (click)="open(domain[0], domain[1])">Join</button>
+          <button ion-button *ngIf="domain[1].length == 0" (click)="open(domain[0], domain[1])">Compare</button>
+        </div>
+      </ion-item>
+    </div>
+  </ion-list>
+
+</ion-content>
