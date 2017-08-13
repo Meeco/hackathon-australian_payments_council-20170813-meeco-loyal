@@ -9,7 +9,7 @@
 <ion-content>
   <h1>FRESH DATA</h1>
   <pre>{{user$ | async | json}}</pre>
-  <pre>{{entitlements$ | async | json}}</pre>
+  <div>{{message}}</div>
   <!-- <pre>{{transactions$ | async | json}}</pre> -->
   <p *ngFor="let domain of transactions$ | async">
     There are <button (click)="open(domain[0], domain[1])">{{domain[1].length}}</button> offers available for <a target="_blank"

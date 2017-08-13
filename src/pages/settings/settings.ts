@@ -24,7 +24,7 @@ import {OBP} from '../../providers/obp';
 export class SettingsPage {
   // Our local settings object
   options: any;
-
+  message: string;
   settingsReady = false;
 
   form: FormGroup;
@@ -42,14 +42,14 @@ export class SettingsPage {
   transactions$: any;
   data: any = {};
   localData: any = {};
-
+  count = 0;
+  txcount = 0;
   constructor(
       public navCtrl: NavController, public formBuilder: FormBuilder, public navParams: NavParams,
       public translate: TranslateService, public obp: OBP, public http: Http) {}
 
   ngOnInit() {
     this.user$ = this.obp.api.getCurrentUser();
-    this.entitlements$ = this.user$.switchMap(({user_id}) => this.obp.api.getEntitlements(user_id));
 
     let words = ['rewards', 'reward', 'loyalty', 'points', 'point'];
     this.transactions$ =
@@ -63,21 +63,30 @@ export class SettingsPage {
               let filtered =
                   accts.filter((acc) => acc.views_available.find((view) => view.id === 'owner'));
               return combineLatest(filtered.map((acct) => {
-                return this.obp.api.getTransactionsForBankAccount('owner', acct.id, acct.bank_id);
+                return this.obp.api.getTransactionsForBankAccount('owner', acct.id, acct.bank_id)
+                    .map((txs) => {
+                      if (txs && txs.transactions.length) {
+                        this.message = `Found ${
+                                                this.txcount += txs.transactions.length
+                                              } Transactions for Lost Rewards!`;
+                      }
+                      return txs;
+                    });
               }));
             })
             .map(transactions => {
-              let txs = transactions.map(({transactions}) => transactions)
-                            .reduce((a, b) => a.concat(b))
-                            .reduce((a, b) => {
-                              console.log(b);
-                              a[b.other_account.metadata.URL] =
-                                  [...a[b.other_account.metadata.URL] || [], b];
-                              return a;
-                            }, {});
+
+              let txs =
+                  transactions.map(({transactions}) => transactions).reduce((a, b) => a.concat(b));
+              txs = txs.reduce((a, b) => {
+                a[b.other_account.metadata.URL] = [...a[b.other_account.metadata.URL] || [], b];
+                return a;
+              }, {});
               return Object.keys(txs);
             })
             .switchMap((urls) => {
+              this.count = urls.length;
+              this.message = `Found ${this.count} Potential Reward Sources`;
               return combineLatest(urls.filter((url) => url !== 'null').map((url) => {
                 let parsed = <any>domain_from_url(url);
                 return this.http.get(parsed.origin)
@@ -86,7 +95,10 @@ export class SettingsPage {
                                return '';
                              }
                            }))
-                    .map((res) => res.text())
+                    .map((res) => {
+                      this.message = `${--this.count - 1} Potential Reward Sources Remain`;
+                      return res.text();
+                    })
                     .filter((val) => !!val)
                     .map((str) => {
                       let a = str.match(/href="([^\'\"]+)/g);
@@ -96,10 +108,21 @@ export class SettingsPage {
                       let b = a.map((val) => val.slice(6))
                                   .filter(
                                       (str) => str.includes('rewards') || str.includes('reward') ||
-                                          str.includes('loyalty') || str.includes('points'));
+                                          str.includes('loyalty') || str.includes('membership'));
                       return [parsed.origin, b || []];
                     });
               }));
+            })
+            .map((payload) => {
+              console.log('here I am ');
+              let count = payload
+                              .map((pay) => {
+                                let count = pay[1].length;
+                                return count;
+                              })
+                              .reduce((a, b) => (a + b), 0);
+              this.message = `Found ${count} Unclaimed Reward Sources`;
+              return payload;
             });
   }
   open(domain: string, links: string[]) {
