@@ -4,6 +4,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {NavController, ToastController} from 'ionic-angular';
 
 import { MainPage } from '../../pages/pages';
+import { MerchantLoginPage } from "../../pages/merchant-login/merchant-login";
 import { User } from '../../providers/user';
 import { OBP } from "../../providers/obp";
 import { usersData } from "../../mocks/users-data";
@@ -58,6 +59,9 @@ export class LoginPage {
             });
   }
 
+  goToMerchantLogin() {
+    this.navCtrl.push(MerchantLoginPage);
+  }
 
   async loadAllUserData() {
     this.loadingAllUserData = true;
@@ -96,12 +100,15 @@ export class LoginPage {
     storageCounterparties = storageCounterparties ? storageCounterparties : {};
 
     // get user data
-    let userData = <any>await this.obp.api.getCurrentUser().toPromise();
+    console.log(`using token ${localStorage.getItem('Authorization')}`)
+    let userData = <any> await this.obp.api.getCurrentUser().toPromise();
+    console.log(`and the return user is ${userData.user_id}`)
     storageUsers[userData.user_id] = userData;
     let userDataFromMock = this.users.find((user) => {
       return user.email === userData.email;
     });
     Object.assign(storageUsers[userData.user_id], userDataFromMock);
+    // console.log(`about to save ${JSON.stringify(storageUsers[userData.user_id])}`)
     localStorage.setItem('users', JSON.stringify(storageUsers));
 
     // get all private accounts
@@ -137,8 +144,8 @@ export class LoginPage {
     localStorage.setItem('transactions', JSON.stringify(storageTransactions));
     console.log('saved all the transactions')
 
-        // get all counterparties
-        for (let transaction of transactions) {
+    // get all counterparties
+    for (let transaction of transactions) {
       let otherAccount = transaction.other_account;
       if (otherAccount.metadata.URL) {
         if (otherAccount.metadata.URL && !storageCounterparties[otherAccount.metadata.URL]) {
@@ -152,5 +159,6 @@ export class LoginPage {
       }
     }
     localStorage.setItem('counterparties', JSON.stringify(storageCounterparties));
+    console.log(`grabbed everything for that user...`)
   }
 }

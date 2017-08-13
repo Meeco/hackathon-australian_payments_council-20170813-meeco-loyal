@@ -26,6 +26,7 @@ import {MapPage} from '../pages/map/map';
 import {MenuPage} from '../pages/menu/menu';
 import {SearchPage} from '../pages/search/search';
 import {SettingsPage} from '../pages/settings/settings';
+import {MerchantLoginPage} from '../pages/merchant-login/merchant-login';
 import {SignupPage} from '../pages/signup/signup';
 import {TabsPage} from '../pages/tabs/tabs';
 import {TutorialPage} from '../pages/tutorial/tutorial';
@@ -46,7 +47,7 @@ import {App} from './app.component';
  */
 let pages = [
   App, CardsPage, ContentPage, ItemCreatePage, ItemDetailPage, ListMasterPage, LoginPage, MapPage,
-  MenuPage, SearchPage, SettingsPage, SignupPage, TabsPage, TutorialPage, WelcomePage
+  MenuPage, SearchPage, SettingsPage, MerchantLoginPage, SignupPage, TabsPage, TutorialPage, WelcomePage
 ];
 
 export function entryComponents() {
@@ -64,6 +65,7 @@ export function providers() {
         return new Configuration({
           apiKeys: <any> {
             get Authorization() {
+              // console.log(`GRABBING THE AUTHORISATION and it is ${localStorage.getItem('Authorization')}`)
               return localStorage.getItem('Authorization');
             }
           }
