@@ -4,8 +4,15 @@ page-list-master {
         align-items: center;
         justify-content: flex-end;
     }
+
     .the-spinner {
         display: flex;
         justify-content: center;
+    }
+
+    .list-md {
+      background: white;
+      opacity: .85;
+
     }
 }

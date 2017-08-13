@@ -24,13 +24,14 @@
   <!-- <pre>{{entitlements$ | async | json}}</pre> -->
   <!-- <pre>{{transactions$ | async | json}}</pre> -->
   {{message}}
-  <ion-list>
-    <div *ngFor="let domain of domains$ | async">
-      <ion-item *ngIf="domain[1].length > 0">
-        There are <button (click)="open(domain[0], domain[1])">{{domain[1].length}}</button> offers available for <a target="_blank"
-          [href]="domain[0]">{{domain[0]}}</a> <br>
-      </ion-item>
-    </div>
-  </ion-list>
-
+  <div style="background: white; opacity: .85">
+    <ion-list style="background: white; opacity: .85">
+      <div *ngFor="let domain of domains$ | async">
+        <ion-item *ngIf="domain[1].length > 0">
+          There are <button (click)="open(domain[0], domain[1])">{{domain[1].length}}</button> offers available for <a target="_blank"
+            [href]="domain[0]">{{domain[0]}}</a> <br>
+        </ion-item>
+      </div>
+    </ion-list>
+  </div>
 </ion-content>
