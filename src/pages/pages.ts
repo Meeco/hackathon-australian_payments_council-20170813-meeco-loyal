@@ -11,7 +11,7 @@ import { CardsPage } from './cards/cards';
 export const MainPage = TabsPage;
 
 // The initial root pages for our tabs (remove if not using tabs)
-export const Tab1Root = ListMasterPage;
-export const Tab2Root = MapPage;
+export const Tab1Root = MapPage;
+export const Tab2Root = ListMasterPage;
 export const Tab3Root = SettingsPage;
 export const Tab4Root = CardsPage;
