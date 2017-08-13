@@ -1,132 +1,138 @@
 import 'rxjs/add/operator/switchMap';
 
-import {Component} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {TranslateService} from '@ngx-translate/core';
-import {NavController, NavParams} from 'ionic-angular';
-import {combineLatest} from 'rxjs/observable/combineLatest';
+import {
+  Component
+} from '@angular/core';
+import {
+  FormBuilder
+} from '@angular/forms';
+import {
+  Http,
+} from '@angular/http';
+import {
+  TranslateService
+} from '@ngx-translate/core';
+import {
+  NavController,
+  NavParams
+} from 'ionic-angular';
+import {
+  combineLatest
+} from 'rxjs/observable/combineLatest';
+import { of
+} from 'rxjs/observable/of';
 
-import { OBP } from '../../providers/obp';
+function domain_from_url(url) {
+  var parser = document.createElement('a');
+  parser.href = url;
+  return parser;
+}
+
+import {
+  OBP
+} from '../../providers/obp';
 
 /**
  * The Settings page is a simple form that syncs with a Settings provider
  * to enable the user to customize settings for the app.
  *
  */
-@Component({ selector: 'page-settings', templateUrl: 'settings.html' })
+@Component({
+  selector: 'page-settings',
+  templateUrl: 'settings.html'
+})
 export class SettingsPage {
-  // Our local settings object
-  options: any;
-
-  settingsReady = false;
-
-  form: FormGroup;
-
-  profileSettings = { page: 'profile', pageTitleKey: 'SETTINGS_PAGE_PROFILE' };
-
-  page: string = 'main';
-  pageTitleKey: string = 'SETTINGS_TITLE';
-  pageTitle: string;
-
-  subSettings: any = SettingsPage;
   user$: any;
-  transactions$: any;
+  entitlements$: any;
+
+  domains$: any;
   data: any = {};
   localData: any = {};
+  transactionsArray: any = [];
+  loading: boolean = true;
 
   constructor(
     public navCtrl: NavController, public formBuilder: FormBuilder, public navParams: NavParams,
-    public translate: TranslateService, public obp: OBP) { }
+    public translate: TranslateService, public obp: OBP, public http: Http) {}
 
   ngOnInit() {
     this.user$ = this.obp.api.getCurrentUser();
+    this.entitlements$ = this.user$.switchMap(({
+      user_id
+    }) => this.obp.api.getEntitlements(user_id));
 
-    //fresh data
-    this.data.privateAccountTransactions = [];
-    this.data.counterparties = [];
-    this.obp.api.getCurrentUser().subscribe(userData => {
-      this.data.userData = userData;
-    });
-    this.obp.api.corePrivateAccountsAllBanks().subscribe((privateAccounts: any) => {
-      this.data.privateAccounts = privateAccounts;
-      for (let account of this.data.privateAccounts) {
-        this.obp.api.getTransactionsForBankAccount('owner', account.id, account.bank_id)
-          .subscribe(transactionsReturn => {
-            this.data.privateAccountTransactions.push(...transactionsReturn.transactions);
-          });
+    this.domains$ =
+      this.obp.api.corePrivateAccountsAllBanks()
+      .switchMap((accts: any) => {
+        return combineLatest(accts.map((acct) => {
+          return this.obp.api.accountById('owner', acct.id, acct.bank_id);
+        }));
+      })
+      .switchMap((accts: any) => {
+        let filtered =
+          accts.filter((acc) => acc.views_available.find((view) => view.id === 'owner'));
+        return combineLatest(filtered.map((acct) => {
+          return this.obp.api.getTransactionsForBankAccount('owner', acct.id, acct.bank_id);
+        }));
+      })
+      .map(transactions => {
+        let txs = transactions.map(({
+            transactions
+          }) => transactions)
+          .reduce((a, b) => a.concat(b))
+          .reduce((a, b) => {
+            // console.log(b);
+            a[b.other_account.metadata.URL] = [...a[b.other_account.metadata.URL] || [], b];
+            return a;
+          }, {});
+        return Object.keys(txs);
+      })
+      .switchMap((urls) => {
+        return combineLatest(urls.filter((url) => url !== 'null').map((url) => {
+          let parsed = < any > domain_from_url(url);
+          return this.http.get(parsed.origin)
+            .catch(() => of ({
+              text: function () {
+                return '';
+              }
+            }))
+            .map((res) => res.text())
+            .filter((val) => !!val)
+            .map((str) => {
+              let a = str.match(/href="([^\'\"]+)/g);
+              if (a === null) {
+                return [parsed.origin, []];
+              }
+              let b = a.map((val) => val.slice(6))
+                .filter(
+                  (str) => str.includes('rewards') || str.includes('reward') ||
+                  str.includes('loyalty') || str.includes('points'));
+              return [parsed.origin, b || []];
+            });
+        }));
+      });
 
-        this.obp.api.getCounterpartiesForAccount('owner', account.id, account.bank_id).subscribe((counterparitesReturn) => {
-          this.data.counterparties.push(...counterparitesReturn.counterparties);
-        });
+      this.domains$.subscribe(() => {
+        this.loading = false;
+      });
+  }
+
+  open(domain: string, links: string[]) {
+    links.forEach((link) => {
+      // console.log(link);
+      if (link[0] === '/') {
+        window.open(domain + link);
+        return;
+      } else {
+        window.open(link, '_blank');
       }
     });
-
-
-    //local storage data
-    let accounts = JSON.parse(localStorage.getItem('accounts'));
-    this.localData.accounts = accounts ? accounts : {};
-    let transactions = JSON.parse(localStorage.getItem('transactions'));
-    this.localData.transactions = transactions ? transactions : {};
-    let users = JSON.parse(localStorage.getItem('users'));
-    this.localData.users = users ? users : {};
-    let counterparties = JSON.parse(localStorage.getItem('counterparties'));
-    this.localData.counterparties = counterparties ? counterparties : {};
-
-
-    this.transactions$ =
-        this.obp.api.corePrivateAccountsAllBanks()
-            .switchMap((accts: any) => {
-              return combineLatest(accts.map((acct) => {
-                return this.obp.api.getTransactionsForBankAccount('owner', acct.id, acct.bank_id);
-              }));
-            })
-            .map(transactions => {
-              let txs = transactions.map(({transactions}) => transactions)
-                            .reduce((a, b) => a.concat(b))
-                            .reduce((a, b) => {
-                              a[b.other_account.metadata.URL] =
-                                  [...a[b.other_account.metadata.URL] || [], b];
-                              return a;
-                            }, {});
-              return txs;
-            });
   }
 
-  _buildForm() {
-    let group: any = {
-      option1: [this.options.option1],
-      option2: [this.options.option2],
-      option3: [this.options.option3]
-    };
-
-    switch (this.page) {
-      case 'main':
-        break;
-      case 'profile':
-        group = { option4: [this.options.option4] };
-        break;
-    }
-    this.form = this.formBuilder.group(group);
-  }
-
-  ionViewDidLoad() {
-    // Build an empty form for the template to render
-    this.form = this.formBuilder.group({});
-  }
-
-  ionViewWillEnter() {
-    // Build an empty form for the template to render
-    this.form = this.formBuilder.group({});
-
-    this.page = this.navParams.get('page') || this.page;
-    this.pageTitleKey = this.navParams.get('pageTitleKey') || this.pageTitleKey;
-
-    this.translate.get(this.pageTitleKey).subscribe((res) => {
-      this.pageTitle = res;
-    });
-  }
-
-  ngOnChanges() {
-    console.log('Ng All Changes');
+  total(vals: any[]) {
+    return vals.reduce((a, b) => {
+      let c = a + +b.details.value.amount;
+      return c;
+    }, 0)
   }
 }

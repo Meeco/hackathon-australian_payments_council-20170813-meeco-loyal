@@ -1,51 +1,30 @@
 <ion-header>
-
   <ion-navbar>
-    <ion-title>{{ pageTitle }}</ion-title>
+    <ion-title>Loyalty</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-<ion-content>
-  <h1>FRESH DATA</h1>
-  <pre>{{user$ | async | json}}</pre>
-  <pre>{{transactions$ | async | json}}</pre>
+<ion-content padding>
+  <div *ngIf="loading">
+    <p>Searching for Loyalty programs. This may take a couple of minutes...</p>
+    <ion-spinner></ion-spinner>
+  </div>
+  <!-- <ion-grid>
+    <ion-row *ngFor="let tx of transactions$ | async">
+      <ion-col col-4>{{ tx[0] }}</ion-col>
+      <ion-col col-4>${{total(tx[1])}}</ion-col>
+    </ion-row>
+  </ion-grid> -->
 
-
-  <h1>LOCAL STORAGE DATA</h1>
-  <pre>{{localData | json}}</pre>
-  <!-- <form [formGroup]="form" *ngIf="settingsReady">
-    <ion-list *ngIf="page == 'main'">
-      <ion-item>
-        <ion-label>{{ 'SETTINGS_OPTION1' | translate }}</ion-label>
-        <ion-toggle formControlName="option1"></ion-toggle>
+  <!-- <pre>{{entitlements$ | async | json}}</pre> -->
+  <!-- <pre>{{transactions$ | async | json}}</pre> -->
+  <ion-list>
+    <div *ngFor="let domain of domains$ | async">
+      <ion-item *ngIf="domain[1].length > 0">
+        There are <button (click)="open(domain[0], domain[1])">{{domain[1].length}}</button> offers available for <a target="_blank"
+          [href]="domain[0]">{{domain[0]}}</a> <br>
       </ion-item>
-
-      <ion-item>
-        <ion-label>{{ 'SETTINGS_OPTION2' | translate }}</ion-label>
-        <ion-input formControlName="option2"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>{{ 'SETTINGS_OPTION3' | translate }}</ion-label>
-        <ion-select formControlName="option3">
-          <ion-option value="1" checked="true">1</ion-option>
-          <ion-option value="2">2</ion-option>
-          <ion-option value="3">3</ion-option>
-        </ion-select>
-      </ion-item>
-
-      <button ion-item [navPush]="subSettings" [navParams]="profileSettings">
-        {{ 'SETTINGS_PROFILE_BUTTON' | translate }}
-      </button>
-    </ion-list>
-
-    <ion-list *ngIf="page == 'profile'">
-      <ion-item>
-        <ion-label>{{ 'SETTINGS_OPTION4' | translate }}</ion-label>
-        <ion-input formControlName="option4"></ion-input>
-      </ion-item>
-    </ion-list>
-  </form> -->
+    </div>
+  </ion-list>
 
 </ion-content>
