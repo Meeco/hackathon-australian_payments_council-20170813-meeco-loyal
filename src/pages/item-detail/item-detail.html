@@ -9,20 +9,13 @@
 
 <ion-content>
   <ion-list>
-    <ion-list-header>
-      Loyalty Program {{exists ? 'Available' : 'Not Available'}}
-    </ion-list-header>
 
-    <button ion-item (click)="open(merchant)">{{ merchant }}</button>
-    <ion-item *ngIf="!exists">
-      <p>Select program to view potential missed points</p>
-    </ion-item>
-    <ion-item *ngIf="!exists">
-      <ion-label>Comparison Data</ion-label>
-      <ion-select [(ngModel)]="compare">
-        <ion-option [value]="x" *ngFor="let x of conversions">{{x.merchant}}</ion-option>
-      </ion-select>
-    </ion-item>
+    <ion-card>
+      <ion-list-header>
+        Loyalty Program {{exists ? 'Available' : 'Not Available'}}
+      </ion-list-header>
+      <button ion-item (click)="open(merchant)">{{ merchant }}</button>
+    </ion-card>
 
     <ion-card>
       <ion-card-header>
@@ -33,6 +26,15 @@
           <span float-right> &#36;{{total}}</span>
         </p>
         <p><span float-left>Total Point:</span><span float-right> {{floor(total * conversion)}} pts</span></p>
+      </ion-item>
+      <ion-item *ngIf="!exists">
+        <p>Select program to view potential missed points</p>
+      </ion-item>
+      <ion-item *ngIf="!exists">
+        <ion-label>Comparison Data</ion-label>
+        <ion-select [(ngModel)]="compare">
+          <ion-option [value]="x" *ngFor="let x of conversions">{{x.merchant}}</ion-option>
+        </ion-select>
       </ion-item>
       <ion-item *ngIf="compare">
         <p><span float-left>Total Spend:</span>
