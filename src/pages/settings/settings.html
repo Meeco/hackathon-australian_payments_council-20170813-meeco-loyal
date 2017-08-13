@@ -18,6 +18,7 @@
 
   <!-- <pre>{{entitlements$ | async | json}}</pre> -->
   <!-- <pre>{{transactions$ | async | json}}</pre> -->
+  {{message}}
   <ion-list>
     <div *ngFor="let domain of domains$ | async">
       <ion-item *ngIf="domain[1].length > 0">

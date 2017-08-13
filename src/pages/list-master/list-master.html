@@ -1,40 +1,24 @@
 <ion-header>
+    <ion-navbar>
+      <ion-title>Loyalty</ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content padding>
+    <div *ngIf="loading">
+      <p>Searching for Loyalty programs...</p>
+      <ion-spinner></ion-spinner>
+    </div>
 
-  <ion-navbar>
-    <ion-title>{{ 'LIST_MASTER_TITLE' | translate }}</ion-title>
-
-    <ion-buttons end>
-      <button ion-button icon-only (click)="addItem()">
-        <ion-icon name="add"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
-
-</ion-header>
-
-<ion-content>
-
-  <ion-list>
-    <ion-item-sliding *ngFor="let item of (currentItems$ | async)?.banks">
-      <div ion-item>
-
-        <ion-avatar item-start>
-          <a target="_blank" [href]="item.website">
-            <img [src]="item.logo || avatar(item.short_name)" />
-          </a>
-        </ion-avatar>
-        <button (click)="openItem(item)">
-          <h2>{{item.full_name}}</h2>
-            <!-- <p>{{item.about}}</p> -->
-            <!-- <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note> -->
-        </button>
+    {{message}}
+    <ion-list>
+      <div *ngFor="let domain of domains$ | async">
+        <ion-item *ngIf="domain[1].length > 0" (click)="open(domain[0], domain[1])">
+          <b>{{domain[0]}}</b>
+          <p><ion-badge item-end>{{domain[1].length}}</ion-badge> offers available</p>
+        </ion-item>
       </div>
-
-      <ion-item-options>
-        <button ion-button color="danger" (click)="deleteItem(item)">
-          {{ 'DELETE_BUTTON' | translate }}
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
-</ion-content>
+    </ion-list>
+  
+  </ion-content>
+  
