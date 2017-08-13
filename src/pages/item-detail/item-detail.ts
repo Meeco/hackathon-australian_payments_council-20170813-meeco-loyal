@@ -3,6 +3,7 @@ import {NavController, NavParams} from 'ionic-angular';
 
 @Component({selector: 'page-item-detail', templateUrl: 'item-detail.html'})
 export class ItemDetailPage {
+  exists = true;
   compare
   conversions = [
     {merchant: 'https://www.anz.com.au', rate: 150},
