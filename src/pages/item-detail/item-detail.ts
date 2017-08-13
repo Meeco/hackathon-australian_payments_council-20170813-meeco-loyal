@@ -1,33 +1,45 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 
-import {Items} from '../../providers/providers';
-
 @Component({selector: 'page-item-detail', templateUrl: 'item-detail.html'})
 export class ItemDetailPage {
   conversion = 100;
   merchant: any = 'https://www.nab.com.au';
   offers: string[] = [
     'https://www.nab.com.au/sites/personal/credit-cards/rewards',
-    'https://www.nab.com.au/sites/personal/credit-cards/rewards'
+    'https://www.nab.com.au/sites/personal/credit-cards/rewards',
+    'https://www.nab.com.au/sites/personal/credit-cards/rewards',
+
   ];
-  mock: string[] = [
-    'Signup Bonus: 100,000 points',
-    'Purchases In First Month: 20,000 points',
-    'Purchases In First Month: 20,000 points',
+  mock: {title: string, points: string}[] = [
+    {title: 'Platinum Offer', points: '110,000'}, {title: 'Spend $25000', points: '50,000'},
+    {title: 'Bonus Points', points: '60,000'},    {title: 'Platinum Offer', points: '110,000'},
+    {title: 'Spend $25000', points: '50,000'},    {title: 'Bonus Points', points: '60,000'},
+    {title: 'Platinum Offer', points: '110,000'}, {title: 'Spend $25000', points: '50,000'},
+    {title: 'Bonus Points', points: '60,000'},    {title: 'Platinum Offer', points: '110,000'},
+    {title: 'Spend $25000', points: '50,000'},    {title: 'Bonus Points', points: '60,000'},
+    {title: 'Platinum Offer', points: '110,000'}, {title: 'Spend $25000', points: '50,000'},
+    {title: 'Bonus Points', points: '60,000'},    {title: 'Platinum Offer', points: '110,000'},
+    {title: 'Spend $25000', points: '50,000'},    {title: 'Bonus Points', points: '60,000'},
+    {title: 'Platinum Offer', points: '110,000'}, {title: 'Spend $25000', points: '50,000'},
+    {title: 'Bonus Points', points: '60,000'},    {title: 'Platinum Offer', points: '110,000'},
+    {title: 'Spend $25000', points: '50,000'},    {title: 'Bonus Points', points: '60,000'},
+
   ];
   total: number = 650;
-  constructor(public navCtrl: NavController, navParams: NavParams, items: Items) {}
+  constructor(public navCtrl: NavController, navParams: NavParams) {}
   ngOnInit() {}
   floor(val: number) {
     return Math.floor(val);
   }
-  open(link) {
+  parse(link: string) {
     if (link[0] === '/') {
-      window.open(this.merchant + link);
-      return;
+      return this.merchant + link;
     } else {
-      window.open(link, '_blank');
+      return link
     }
+  }
+  open(link) {
+    return window.open(this.parse(link));
   }
 }
