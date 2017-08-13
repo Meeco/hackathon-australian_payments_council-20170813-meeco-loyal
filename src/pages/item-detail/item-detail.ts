@@ -6,9 +6,9 @@ export class ItemDetailPage {
   exists: boolean;
   compare
   conversions = [
-    {merchant: 'https://www.anz.com.au', rate: 150},
+    {merchant: 'Woolworths', rate: 150},
     {
-      merchant: 'https://www.cba.com.au',
+      merchant: 'IGA',
       rate: 125,
     },
   ];
@@ -39,6 +39,7 @@ export class ItemDetailPage {
     const payload = navParams.get('payload');
     this.total = payload.totalSpend;
     this.exists = payload.exists;
+    this.merchant = payload.domain;
   }
   ngOnInit() {}
   floor(val: number) {
