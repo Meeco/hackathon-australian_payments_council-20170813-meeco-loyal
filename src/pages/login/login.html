@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ 'LOGIN_TITLE' | translate }}</ion-title>
+    <ion-title>User Login</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -43,9 +43,15 @@
 
     </ion-list>
   </form>
+
+  <div padding>
+    <button (click)="goToMerchantLogin()" ion-button color="primary" block>Merchant Login</button>
+  </div>
+
   <div padding>
     <button [disabled]="loadingAllUserData" (click)="loadAllUserData()" style="width: 150px; position: absolute; bottom: 30px;" ion-button color="primary" block>
       Load Data<span [hidden]="!loadingAllUserData">&nbsp;&nbsp;&nbsp;&nbsp;<ion-spinner></ion-spinner></span>
     </button>
   </div>
+
 </ion-content>

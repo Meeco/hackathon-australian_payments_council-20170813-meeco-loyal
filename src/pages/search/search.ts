@@ -20,7 +20,7 @@ export class SearchPage implements OnInit{
   selected = null;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public items: Items) {
-    
+    this.selected = JSON.parse(localStorage.getItem('LoggedInMerchant'));
   }
 
   ngOnInit(): void {
@@ -72,6 +72,9 @@ export class SearchPage implements OnInit{
       }
       
     }
+    console.log(`user list is ${JSON.stringify(Object.keys(userList).map(function(key) {
+      return userList[key];
+    }).length)}`)
     return Object.keys(userList).map(function(key) {
       return userList[key];
     });

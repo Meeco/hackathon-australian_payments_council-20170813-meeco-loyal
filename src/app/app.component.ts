@@ -15,6 +15,7 @@ import {SignupPage} from '../pages/signup/signup';
 import {TabsPage} from '../pages/tabs/tabs';
 import {TutorialPage} from '../pages/tutorial/tutorial';
 import {WelcomePage} from '../pages/welcome/welcome';
+import {MerchantLoginPage} from '../pages/merchant-login/merchant-login';
 
 @Component({
   template: `<ion-menu [content]="content">
@@ -46,7 +47,8 @@ export class App {
     { title: 'Content', component: ContentPage }, { title: 'Login', component: LoginPage },
     { title: 'Signup', component: SignupPage }, { title: 'Map', component: MapPage },
     { title: 'Master Detail', component: ListMasterPage }, { title: 'Menu', component: MenuPage },
-    { title: 'Settings', component: SettingsPage }, { title: 'Search', component: SearchPage }
+    { title: 'Settings', component: SettingsPage }, { title: 'Search', component: SearchPage },
+    { title: 'MerchantLogin', component: MerchantLoginPage }
   ]
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
