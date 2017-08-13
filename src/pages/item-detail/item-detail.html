@@ -55,6 +55,6 @@
   <div class="join-now" padding>
     <button ion-button large color="primary" [disabled]="!exists" (click)="joinNow()">JOIN NOW!</button>
   </div>
-  <p *ngIf="exists">Full Disclosure... If you join we get $1.25 as an affiliate marketer.</p>
-  <p *ngIf="!exists">These purchases are not eligible for any rewards program.</p>
+  <p *ngIf="exists" class="on-transparent">Full Disclosure... If you join we get $1.25 as an affiliate marketer.</p>
+  <p *ngIf="!exists" class="on-transparent">These purchases are not eligible for any rewards program.</p>
 </ion-content>
