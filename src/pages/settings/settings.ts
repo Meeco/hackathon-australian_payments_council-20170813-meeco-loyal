@@ -1,7 +1,7 @@
 import 'rxjs/add/operator/switchMap';
 
 import {Component} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder} from '@angular/forms';
 import {Http,} from '@angular/http';
 import {TranslateService} from '@ngx-translate/core';
 import {NavController, NavParams} from 'ionic-angular';
@@ -13,6 +13,7 @@ function domain_from_url(url) {
   parser.href = url;
   return parser;
 }
+
 import {OBP} from '../../providers/obp';
 
 /**
@@ -27,7 +28,6 @@ export class SettingsPage {
   message: string;
   settingsReady = false;
 
-  form: FormGroup;
 
   profileSettings = {page: 'profile', pageTitleKey: 'SETTINGS_PAGE_PROFILE'};
 
@@ -39,7 +39,7 @@ export class SettingsPage {
   user$: any;
   entitlements$: any;
 
-  transactions$: any;
+  domains$: any;
   data: any = {};
   localData: any = {};
   count = 0;
@@ -124,53 +124,30 @@ export class SettingsPage {
               this.message = `Found ${count} Unclaimed Reward Sources`;
               return payload;
             });
-  }
-  open(domain: string, links: string[]) {
-    links.forEach((link) => {
-      console.log(link);
-      if (link[0] === '/') {
-        window.open(domain + link);
-        return;
-      } else {
-        window.open(link, '_blank');
-      }
-    });
-  }
-  _buildForm() {
-    let group: any = {
-      option1: [this.options.option1],
-      option2: [this.options.option2],
-      option3: [this.options.option3]
-    };
+  }));
+});
 
-    switch (this.page) {
-      case 'main':
-        break;
-      case 'profile':
-        group = {option4: [this.options.option4]};
-        break;
+this.domains$.subscribe(() => {
+  this.loading = false;
+});
+}
+
+open(domain: string, links: string[]) {
+  links.forEach((link) => {
+    // console.log(link);
+    if (link[0] === '/') {
+      window.open(domain + link);
+      return;
+    } else {
+      window.open(link, '_blank');
     }
-    this.form = this.formBuilder.group(group);
-  }
+  });
+}
 
-  ionViewDidLoad() {
-    // Build an empty form for the template to render
-    this.form = this.formBuilder.group({});
-  }
-
-  ionViewWillEnter() {
-    // Build an empty form for the template to render
-    this.form = this.formBuilder.group({});
-
-    this.page = this.navParams.get('page') || this.page;
-    this.pageTitleKey = this.navParams.get('pageTitleKey') || this.pageTitleKey;
-
-    this.translate.get(this.pageTitleKey).subscribe((res) => {
-      this.pageTitle = res;
-    });
-  }
-
-  ngOnChanges() {
-    console.log('Ng All Changes');
-  }
+total(vals: any[]) {
+  return vals.reduce((a, b) => {
+    let c = a + +b.details.value.amount;
+    return c;
+  }, 0)
+}
 }
