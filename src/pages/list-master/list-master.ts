@@ -42,6 +42,7 @@ export class ListMasterPage {
               }));
             })
             .switchMap((accts: any) => {
+              this.message = `Searching ${accts.length} Accounts for available transactions`;
               let filtered =
                   accts.filter((acc) => acc.views_available.find((view) => view.id === 'owner'));
               return combineLatest(filtered.map((acct) => {

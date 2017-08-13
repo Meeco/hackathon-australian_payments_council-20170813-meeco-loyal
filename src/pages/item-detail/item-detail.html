@@ -12,7 +12,14 @@
     <ion-list-header>
       Loyalty Program
     </ion-list-header>
+
     <button ion-item (click)="open(merchant)">{{ merchant }}</button>
+    <ion-item>
+      <ion-label>Comparison Data</ion-label>
+      <ion-select [(ngModel)]="compare">
+        <ion-option [value]="x" *ngFor="let x of conversions">x.merchant</ion-option>
+      </ion-select>
+    </ion-item>
     <ion-list-header>
       Point Conversion.
     </ion-list-header>
