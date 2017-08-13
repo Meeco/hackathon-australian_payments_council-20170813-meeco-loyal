@@ -6,16 +6,16 @@
   
   <ion-content padding>
     <div *ngIf="loading">
-      <p>Searching for Loyalty programs. This may take a couple of minutes...</p>
+      <p>Searching for Loyalty programs...</p>
       <ion-spinner></ion-spinner>
     </div>
 
     {{message}}
     <ion-list>
       <div *ngFor="let domain of domains$ | async">
-        <ion-item *ngIf="domain[1].length > 0">
-          There are <button (click)="open(domain[0], domain[1])">{{domain[1].length}}</button> offers available for <a target="_blank"
-            [href]="domain[0]">{{domain[0]}}</a> <br>
+        <ion-item *ngIf="domain[1].length > 0" (click)="open(domain[0], domain[1])">
+          <b>{{domain[0]}}</b>
+          <p><ion-badge item-end>{{domain[1].length}}</ion-badge> offers available</p>
         </ion-item>
       </div>
     </ion-list>
