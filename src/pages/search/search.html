@@ -15,6 +15,7 @@
     </ion-select>
   </ion-item>
   <h1>{{selected.URL}}</h1>
+  <h2>Most Loyal Customers</h2>
 
      <!-- <pre>{{getList() | json}}</pre>    -->
  
@@ -24,7 +25,7 @@
         <img [src]="item?.user?.picture?.thumbnail" />
       </ion-avatar> 
       <h2>{{item?.user?.name?.first}} {{item?.user?.name?.last}}</h2>
-      <p>{{item.amount}}</p>
+      <p>{{item.amount | number : '1.2-2'}}</p>
       <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
     </button>
   </ion-list> 

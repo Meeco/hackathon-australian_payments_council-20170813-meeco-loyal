@@ -65,11 +65,11 @@ export class SearchPage implements OnInit{
           if(!userList[transaction.user_id]) {
             userList[transaction.user_id] = {
               user: this.users[transaction.user_id], 
-              amount: parseFloat(transaction.details.value.amount),
+              amount: (parseFloat(transaction.details.value.amount) * -1),
               transactions: [transaction]
             }
           } else {
-            userList[transaction.user_id].amount = userList[transaction.user_id].amount + parseFloat(transaction.details.value.amount);
+            userList[transaction.user_id].amount = userList[transaction.user_id].amount + (parseFloat(transaction.details.value.amount) * -1);
             userList[transaction.user_id].transactions.push(transaction)
           }
         }
@@ -79,9 +79,18 @@ export class SearchPage implements OnInit{
     console.log(`user list is ${JSON.stringify(Object.keys(userList).map(function(key) {
       return userList[key];
     }).length)}`)
-    return Object.keys(userList).map(function(key) {
+    let listToOrder =  Object.keys(userList).map(function(key) {
       return userList[key];
     });
+    return listToOrder.sort((a, b) => {
+      if(a.amount < b.amount) {
+        return 1
+      } else if (a.amount > b.amount) {
+        return -1
+      } else {
+        return 0;
+      }
+    })
   }
 
   async getCounterparties() {
