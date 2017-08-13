@@ -28,7 +28,7 @@ export class SettingsPage {
   message: string;
   settingsReady = false;
 
-
+  loading: boolean = true;
   profileSettings = {page: 'profile', pageTitleKey: 'SETTINGS_PAGE_PROFILE'};
 
   page: string = 'main';
@@ -44,6 +44,8 @@ export class SettingsPage {
   localData: any = {};
   count = 0;
   txcount = 0;
+  transactions$: any;
+
   constructor(
       public navCtrl: NavController, public formBuilder: FormBuilder, public navParams: NavParams,
       public translate: TranslateService, public obp: OBP, public http: Http) {}
@@ -51,8 +53,7 @@ export class SettingsPage {
   ngOnInit() {
     this.user$ = this.obp.api.getCurrentUser();
 
-    let words = ['rewards', 'reward', 'loyalty', 'points', 'point'];
-    this.transactions$ =
+    this.domains$ =
         this.obp.api.corePrivateAccountsAllBanks()
             .switchMap((accts: any) => {
               return combineLatest(accts.map((acct) => {
@@ -114,7 +115,6 @@ export class SettingsPage {
               }));
             })
             .map((payload) => {
-              console.log('here I am ');
               let count = payload
                               .map((pay) => {
                                 let count = pay[1].length;
@@ -122,32 +122,31 @@ export class SettingsPage {
                               })
                               .reduce((a, b) => (a + b), 0);
               this.message = `Found ${count} Unclaimed Reward Sources`;
+              this.loading = false;
               return payload;
             });
-  }));
-});
 
-this.domains$.subscribe(() => {
-  this.loading = false;
-});
-}
+    // this.domains$.subscribe(() => {
+    //   this.loading = false;
+    // });
+  }
 
-open(domain: string, links: string[]) {
-  links.forEach((link) => {
-    // console.log(link);
-    if (link[0] === '/') {
-      window.open(domain + link);
-      return;
-    } else {
-      window.open(link, '_blank');
-    }
-  });
-}
+  open(domain: string, links: string[]) {
+    links.forEach((link) => {
+      // console.log(link);
+      if (link[0] === '/') {
+        window.open(domain + link);
+        return;
+      } else {
+        window.open(link, '_blank');
+      }
+    });
+  }
 
-total(vals: any[]) {
-  return vals.reduce((a, b) => {
-    let c = a + +b.details.value.amount;
-    return c;
-  }, 0)
-}
+  total(vals: any[]) {
+    return vals.reduce((a, b) => {
+      let c = a + +b.details.value.amount;
+      return c;
+    }, 0)
+  }
 }

@@ -4,12 +4,6 @@
   </ion-navbar>
 </ion-header>
 
-<<<<<<< HEAD
-<ion-content>
-  <h1>FRESH DATA</h1>
-  <pre>{{user$ | async | json}}</pre>
-  <div>{{message}}</div>
-=======
 <ion-content padding>
   <div *ngIf="loading">
     <p>Searching for Loyalty programs. This may take a couple of minutes...</p>
@@ -23,8 +17,8 @@
   </ion-grid> -->
 
   <!-- <pre>{{entitlements$ | async | json}}</pre> -->
->>>>>>> 1480d9e0c2cf7c8bc262f3868a759a1f4e53a371
   <!-- <pre>{{transactions$ | async | json}}</pre> -->
+  {{message}}
   <ion-list>
     <div *ngFor="let domain of domains$ | async">
       <ion-item *ngIf="domain[1].length > 0">
