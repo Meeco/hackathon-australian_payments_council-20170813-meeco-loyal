@@ -1,18 +1,19 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ item.name }}</ion-title>
+    <ion-title>Merchant</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
-  <div class="item-profile" text-center #profilePic [style.background-image]="'url(' + item.profilePic + ')'">
-  </div>
-
-  <div class="item-detail" padding>
-    <h2>{{item.name}}</h2>
-    <p>{{item.about}}</p>
-  </div>
+  <a>{{ merchant }}</a>
+  <p>Total Spend: {{total}}</p>
+  <p>Total Point: {{floor(total * conversion)}}</p>
+  <ion-list>
+    <a ion-item [href]="offer" *ngFor="let offer of offers; let i = index;" (click)="itemSelected(item)">
+        {{ mock[idx] }}
+      </a>
+  </ion-list>
 </ion-content>
