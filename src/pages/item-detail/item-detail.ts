@@ -42,6 +42,7 @@ export class ItemDetailPage {
     this.exists = payload.exists;
     this.merchant = payload.domain;
     this.links = payload.links;
+    this.offers = this.links;
   }
   ngOnInit() {}
   floor(val: number) {
