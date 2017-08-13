@@ -1,11 +1,45 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 
-import {Items} from '../../providers/providers';
-
 @Component({selector: 'page-item-detail', templateUrl: 'item-detail.html'})
 export class ItemDetailPage {
-  item: any;
+  conversion = 100;
+  merchant: any = 'https://www.nab.com.au';
+  offers: string[] = [
+    'https://www.nab.com.au/sites/personal/credit-cards/rewards',
+    'https://www.nab.com.au/sites/personal/credit-cards/rewards',
+    'https://www.nab.com.au/sites/personal/credit-cards/rewards',
 
-  constructor(public navCtrl: NavController, navParams: NavParams, items: Items) {}
+  ];
+  mock: {title: string, points: string}[] = [
+    {title: 'Platinum Offer', points: '110,000'}, {title: 'Spend $25000', points: '50,000'},
+    {title: 'Bonus Points', points: '60,000'},    {title: 'Platinum Offer', points: '110,000'},
+    {title: 'Spend $25000', points: '50,000'},    {title: 'Bonus Points', points: '60,000'},
+    {title: 'Platinum Offer', points: '110,000'}, {title: 'Spend $25000', points: '50,000'},
+    {title: 'Bonus Points', points: '60,000'},    {title: 'Platinum Offer', points: '110,000'},
+    {title: 'Spend $25000', points: '50,000'},    {title: 'Bonus Points', points: '60,000'},
+    {title: 'Platinum Offer', points: '110,000'}, {title: 'Spend $25000', points: '50,000'},
+    {title: 'Bonus Points', points: '60,000'},    {title: 'Platinum Offer', points: '110,000'},
+    {title: 'Spend $25000', points: '50,000'},    {title: 'Bonus Points', points: '60,000'},
+    {title: 'Platinum Offer', points: '110,000'}, {title: 'Spend $25000', points: '50,000'},
+    {title: 'Bonus Points', points: '60,000'},    {title: 'Platinum Offer', points: '110,000'},
+    {title: 'Spend $25000', points: '50,000'},    {title: 'Bonus Points', points: '60,000'},
+
+  ];
+  total: number = 650;
+  constructor(public navCtrl: NavController, navParams: NavParams) {}
+  ngOnInit() {}
+  floor(val: number) {
+    return Math.floor(val);
+  }
+  parse(link: string) {
+    if (link[0] === '/') {
+      return this.merchant + link;
+    } else {
+      return link
+    }
+  }
+  open(link) {
+    return window.open(this.parse(link));
+  }
 }

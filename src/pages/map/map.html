@@ -1,12 +1,23 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ 'MAP_TITLE' | translate }}</ion-title>
+    <ion-title>Search for Loyalty</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
-  <div #map id="map"></div>
+  <ion-card>
+    <ion-card-content>
+      <ion-card-title>
+        What does this do?
+      </ion-card-title>
+      <p>
+        Want to know what you've been missing out on? Let us analyse your <em>Transactional Data</em> by giving us access
+        to it through the <strong><em>OpenBank API</em></strong>
+      </p>
+      <button padding ion-button block (click)="start()" margin-top>Permission and Analysis</button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

@@ -1,18 +1,33 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ item.name }}</ion-title>
+    <ion-title>Merchant</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
-  <div class="item-profile" text-center #profilePic [style.background-image]="'url(' + item.profilePic + ')'">
-  </div>
-
-  <div class="item-detail" padding>
-    <h2>{{item.name}}</h2>
-    <p>{{item.about}}</p>
-  </div>
+  <ion-list>
+    <ion-list-header>
+      Loyalty Program
+    </ion-list-header>
+    <button ion-item (click)="open(merchant)">{{ merchant }}</button>
+    <ion-list-header>
+      Point Conversion.
+    </ion-list-header>
+    <ion-item>
+      <p><span float-left>Total Spend:</span>
+        <span float-right> &#36;{{total}}</span>
+      </p>
+      <p><span float-left>Total Point:</span><span float-right> {{floor(total * conversion)}} pts</span></p>
+    </ion-item>
+    <ion-list-header>
+      Available Offers.
+    </ion-list-header>
+    <button ion-item *ngFor="let offer of offers; let i = index;" (click)="open(offer)">
+        <span float-left>{{ mock[i].title }}</span><span float-right>{{mock[i].points}}</span>
+    </button>
+  </ion-list>
+  <button ion-button large color="primary">JOIN NOW!</button>
 </ion-content>
