@@ -35,8 +35,11 @@ export class ItemDetailPage {
     {title: 'Spend $25000', points: '50,000'},    {title: 'Bonus Points', points: '60,000'},
 
   ];
-  total: number = 650;
-  constructor(public navCtrl: NavController, navParams: NavParams) {}
+  total: number = 0;
+  constructor(public navCtrl: NavController, navParams: NavParams) {
+    const payload = navParams.get('payload');
+    this.total = payload.totalSpend;
+  }
   ngOnInit() {}
   floor(val: number) {
     return Math.floor(val);

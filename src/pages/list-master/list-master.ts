@@ -20,12 +20,13 @@ import {OBP} from '../../providers/obp';
 
 @Component({selector: 'page-list-master', templateUrl: 'list-master.html'})
 export class ListMasterPage {
+  trans: any;
+  transactions$: any;
   domains$: any;
   data: any = {};
   localData: any = {};
   count = 0;
   txcount = 0;
-  transactions$: any;
   message: string;
   loading: boolean = true;
 
@@ -34,7 +35,7 @@ export class ListMasterPage {
       public obp: OBP, public http: Http) {}
 
   ngOnInit() {
-    this.domains$ =
+    this.transactions$ = 
         this.obp.api.corePrivateAccountsAllBanks()
             .switchMap((accts: any) => {
               return combineLatest(accts.map((acct) => {
@@ -65,8 +66,11 @@ export class ListMasterPage {
                 a[b.other_account.metadata.URL] = [...a[b.other_account.metadata.URL] || [], b];
                 return a;
               }, {});
-              return Object.keys(txs);
-            })
+              this.trans = txs;
+              return  Object.keys(txs);
+            });
+
+            this.domains$ = this.transactions$
             .switchMap((urls) => {
               this.count = urls.length;
               this.message = `Found ${this.count} Potential Reward Sources`;
@@ -119,18 +123,12 @@ export class ListMasterPage {
         let c = a + +b.details.value.amount;
         return c;
       },
-      0)}
+      0)};
 
-  /**
-   * Navigate to the detail page for this item.
-   */
-  openItem(item: Item) {
-    this.navCtrl.push(ItemDetailPage, {item: item});
-  }
-
-  // TMP
   open(domain: string, links: string[]) {
-    this.navCtrl.push(ItemDetailPage, {domain, links});
+    let totalSpend = Math.abs(this.total(this.trans[domain] || []));
+    console.log('spend ' + totalSpend);
+    this.navCtrl.push(ItemDetailPage, {payload:{domain, links, totalSpend}});
   }
 
   avatar(short_name: string) {
