@@ -11,4 +11,13 @@ page-login {
   .item-select .label-md {
     color: white;
   }
+
+  ion-item {
+    border-color: white !important;
+    box-shadow: none !important;
+    .item-inner {
+      border-color: white !important;
+      box-shadow: none !important;
+    }
+  }
 }
