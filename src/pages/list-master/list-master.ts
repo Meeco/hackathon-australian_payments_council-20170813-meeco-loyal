@@ -127,8 +127,8 @@ export class ListMasterPage {
 
   open(domain: string, links: string[]) {
     let totalSpend = Math.abs(this.total(this.trans[domain] || []));
-    console.log('spend ' + totalSpend);
-    this.navCtrl.push(ItemDetailPage, {payload:{domain, links, totalSpend}});
+    let exists = links.length > 0;
+    this.navCtrl.push(ItemDetailPage, {payload:{domain, links, totalSpend, exists}});
   }
 
   avatar(short_name: string) {

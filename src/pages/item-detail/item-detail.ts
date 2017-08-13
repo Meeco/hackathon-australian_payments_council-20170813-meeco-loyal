@@ -3,7 +3,7 @@ import {NavController, NavParams} from 'ionic-angular';
 
 @Component({selector: 'page-item-detail', templateUrl: 'item-detail.html'})
 export class ItemDetailPage {
-  exists = true;
+  exists: boolean;
   compare
   conversions = [
     {merchant: 'https://www.anz.com.au', rate: 150},
@@ -17,8 +17,7 @@ export class ItemDetailPage {
   offers: string[] = [
     'https://www.nab.com.au/sites/personal/credit-cards/rewards',
     'https://www.nab.com.au/sites/personal/credit-cards/rewards',
-    'https://www.nab.com.au/sites/personal/credit-cards/rewards',
-
+    'https://www.nab.com.au/sites/personal/credit-cards/rewards'
   ];
   mock: {title: string, points: string}[] = [
     {title: 'Platinum Offer', points: '110,000'}, {title: 'Spend $25000', points: '50,000'},
@@ -39,6 +38,7 @@ export class ItemDetailPage {
   constructor(public navCtrl: NavController, navParams: NavParams) {
     const payload = navParams.get('payload');
     this.total = payload.totalSpend;
+    this.exists = payload.exists;
   }
   ngOnInit() {}
   floor(val: number) {
