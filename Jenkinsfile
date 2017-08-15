@@ -25,13 +25,17 @@ pipeline {
     }
   }
   stage ('Deploy') {
+    agent {
+      label 'ubuntu'
+    }
     steps {
+        unstash 'build'
       step([
         $class: 'S3BucketPublisher',
         entries: [[
-          bucket: 'meeco-banks-ionic',
+          bucket: 'banks.meeco.me',
           noUploadOnFailure: true,
-          selectedRegion: 'ap-southeast-2',
+          selectedRegion: 'us-east-2',
           sourceFile: 'www/**',
           storageClass: 'STANDARD',
           gzipFiles: true
