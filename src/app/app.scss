@@ -24,6 +24,16 @@ ion-content {
   background-attachment: initial;
 }
 
+ion-list {
+  background: transparent;
+}
+
+ion-item {
+  color: white;
+  opacity: .75;
+  border-radius: 10px;
+}
+
 ion-app {
   .item-md {
     background: transparent;

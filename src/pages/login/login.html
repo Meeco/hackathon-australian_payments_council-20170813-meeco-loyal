@@ -10,10 +10,10 @@
   <div class="logo-holder" style="text-align: center">
     <br>
     <br>
-    <img src="../../assets/img/meeco-logo.png" alt="Meeco Logo" style="max-width: 75px">
+    <img src="assets/img/meeco-logo.png" alt="Meeco Logo" style="max-width: 75px">
   </div>
-  <form (submit)="doLogin()">
-    <ion-list>
+  <form (ngSubmit)="doLogin()">
+    <ion-list padding>
       <ion-item>
         <ion-label>Profiles</ion-label>
         <ion-select name="user" [(ngModel)]="selected">
@@ -23,7 +23,7 @@
 
 
       <ion-item>
-        <ion-label fixed>{{ 'EMAIL' | translate }}</ion-label>
+        <ion-label fixed>Email</ion-label>
         <ion-input type="email" [(ngModel)]="selected.user_name" name="email"></ion-input>
       </ion-item>
 
@@ -37,20 +37,20 @@
       -->
 
       <ion-item>
-        <ion-label fixed>{{ 'PASSWORD' | translate }}</ion-label>
+        <ion-label fixed>Password</ion-label>
         <ion-input type="password" [(ngModel)]="selected.password" name="password"></ion-input>
       </ion-item>
 
-      <div padding>
-        <button ion-button color="primary" block>{{ 'LOGIN_BUTTON' | translate }}</button>
+      <div style="padding-top: 10px;">
+        <button type="submit" ion-button color="primary" block>Login</button>
       </div>
-
     </ion-list>
   </form>
-
   <div padding>
     <button (click)="goToMerchantLogin()" ion-button color="primary" block>Merchant Login</button>
   </div>
+
+
 
   <!-- <div padding>
     <button [disabled]="loadingAllUserData" (click)="loadAllUserData()" style="width: 150px; position: absolute; bottom: 30px;"
