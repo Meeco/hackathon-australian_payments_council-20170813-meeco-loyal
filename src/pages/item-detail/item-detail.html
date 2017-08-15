@@ -7,7 +7,8 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content style="background: url('../assets/img/thirdphoto.jpg');background-size: cover;background-repeat: no-repeat;background-attachment: fixed;
+">
   <ion-list>
 
     <ion-card>
@@ -19,7 +20,7 @@
 
     <ion-card>
       <ion-card-header>
-          Point Conversion
+        Point Conversion
       </ion-card-header>
       <ion-item *ngIf="exists">
         <p><span float-left>Total Spend:</span>
@@ -46,7 +47,7 @@
 
     <ion-card *ngIf="exists">
       <ion-card-header>
-          Available Offers
+        Available Offers
       </ion-card-header>
       <button ion-item *ngFor="let offer of (exists ? offers : []); let i = index;" (click)="open(offer)">
           <span float-left>{{ mock[i].title }}</span><span float-right>{{mock[i].points}}</span>
@@ -55,7 +56,7 @@
   </ion-list>
 
   <div class="join-now" padding>
-    <button ion-button large color="primary" [disabled]="!exists" (click)="joinNow()">JOIN NOW!</button>
+    <button style="border-radius: 50px;" ion-button large color="primary" [disabled]="!exists" (click)="joinNow()">JOIN NOW!</button>
   </div>
   <p *ngIf="exists" class="on-transparent" text-center padding-top>Full Disclosure... If you join we get $1.25 as an affiliate marketer.</p>
   <p *ngIf="!exists" class="on-transparent" text-center padding-top>These purchases are not eligible for any rewards program.</p>

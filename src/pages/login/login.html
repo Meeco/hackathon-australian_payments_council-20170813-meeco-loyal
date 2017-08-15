@@ -6,11 +6,12 @@
 
 </ion-header>
 
-<ion-content>
+<ion-content style="background: url('../assets/img/thirdphoto.jpg');background-size: cover;background-repeat: no-repeat;background-attachment: fixed;
+">
   <div class="logo-holder" style="text-align: center">
     <br>
     <br>
-    <img src="assets/img/meeco-logo.png" alt="Meeco Logo" style="max-width: 75px">
+    <img src="https://meeco.me/assets/img/logo-reversed.png" alt="Meeco Logo" style="max-width: 75px">
   </div>
   <form (ngSubmit)="doLogin()">
     <ion-list padding>
@@ -42,12 +43,12 @@
       </ion-item>
 
       <div style="padding-top: 10px;">
-        <button type="submit" ion-button color="primary" block>Login</button>
+        <button style="border-radius: 50px;" type="submit" ion-button color="primary" block>Login</button>
       </div>
     </ion-list>
   </form>
   <div padding>
-    <button (click)="goToMerchantLogin()" ion-button color="primary" block>Merchant Login</button>
+    <button style="border-radius: 50px;" (click)="goToMerchantLogin()" ion-button color="primary" block>Merchant Login</button>
   </div>
 
 

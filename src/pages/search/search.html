@@ -7,7 +7,8 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content style="background: url('../assets/img/thirdphoto.jpg');background-size: cover;background-repeat: no-repeat;background-attachment: fixed;
+">
   <!-- <ion-item>
     <ion-label>Merchant</ion-label>
     <ion-select name="counterparty" [(ngModel)]="selected">
@@ -17,17 +18,17 @@
   <h1>{{selected.URL}}</h1>
   <h2>Most Loyal Customers</h2>
 
-     <!-- <pre>{{getList() | json}}</pre>    -->
- 
+  <!-- <pre>{{getList() | json}}</pre>    -->
+
   <ion-list>
     <button ion-item *ngFor="let item of getList()">
        <ion-avatar item-start>
         <img [src]="item?.user?.picture?.thumbnail" />
-      </ion-avatar> 
+      </ion-avatar>
       <h2>{{item?.user?.name?.first}} {{item?.user?.name?.last}}</h2>
       <ion-note item-end>{{item.amount | number : '1.2-2'}}</ion-note>
     </button>
-  </ion-list> 
+  </ion-list>
 
 
 
