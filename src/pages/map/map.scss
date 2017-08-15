@@ -1,4 +1,8 @@
 page-map {
+  background: url('../assets/img/thirdphoto.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   .item-md {
     background: transparent;
   }
@@ -11,10 +15,8 @@ page-map {
   .item-select .label-md {
     color: white;
   }
-
   .card-md {
-  opacity: .85;
-  transition: opacity 150ms ease-in
+    opacity: .85;
+    transition: opacity 150ms ease-in
   }
-
 }

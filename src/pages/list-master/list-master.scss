@@ -1,18 +1,19 @@
 page-list-master {
-    .offer {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-    }
-
-    .the-spinner {
-        display: flex;
-        justify-content: center;
-    }
-
-    .list-md {
-      background: white;
-      opacity: .85;
-
-    }
+  background: url('../assets/img/thirdphoto.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  .offer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .the-spinner {
+    display: flex;
+    justify-content: center;
+  }
+  .list-md {
+    background: white;
+    opacity: .85;
+  }
 }

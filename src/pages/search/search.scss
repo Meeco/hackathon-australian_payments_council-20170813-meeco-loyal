@@ -1,16 +1,20 @@
 page-search {
+  background: url('../assets/img/thirdphoto.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   h1 {
-        text-align: center;
-        color: white;
+    text-align: center;
+    color: white;
   }
-      h2 {
-        text-align: center;
-        color: white;
+  h2 {
+    text-align: center;
+    color: white;
   }
-      .item-md {
-        color: white;
-        ion-note {
-          color: white;
-        }
-      }
+  .item-md {
+    color: white;
+    ion-note {
+      color: white;
+    }
+  }
 }
