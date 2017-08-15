@@ -6,9 +6,7 @@ pipeline {
   }
   stages {
     stage ('build') {
-      agent {
-        docker 'node:6'
-      }
+      agent { dockerfile true }
       steps {
         configFileProvider([configFile(fileId: 'GLOBAL_NPMRC', targetLocation: '.npmrc')]) {
         sh 'npm install'
