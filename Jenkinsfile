@@ -15,6 +15,7 @@ pipeline {
         sh 'ionic cordova prepare ios android --no-interactive'
       }
     }
+
     post {
       success {
           stash includes: 'www/**', name: 'build'
