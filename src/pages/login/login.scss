@@ -1,24 +1,3 @@
 page-login {
-  .item-md {
-    background: transparent;
-  }
-  .item-input .label-md {
-    color: white;
-  }
-  .content-md {
-    background: transparent;
-  }
-  .item-select .label-md {
-    color: white;
-  }
-
-
-  ion-item {
-    border-color: white !important;
-    box-shadow: none !important;
-    .item-inner {
-      border-color: white !important;
-      box-shadow: none !important;
-    }
-  }
+  opacity: .75;
 }

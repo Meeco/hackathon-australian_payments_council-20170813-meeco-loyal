@@ -12,9 +12,19 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-ion-app {
-  background-image: url("../assets/img/thirdphoto.jpg");
+// @media (max-width:640px) {
+//   ion-content {
+//     background-image: url('../assets/img/thirdphoto.jpg');
+//     background-attachment: initial;
+//   }
+// }
+ion-content {
+  background-image: url('../assets/img/thirdphoto.jpg');
   background-size: cover;
+  background-attachment: initial;
+}
+
+ion-app {
   .item-md {
     background: transparent;
   }
