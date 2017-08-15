@@ -1,10 +1,10 @@
 import 'rxjs/add/operator/switchMap';
 
 import {Component} from '@angular/core';
-import {Http} from '@angular/http';
+import {Http, URLSearchParams} from '@angular/http';
 import {ModalController, NavController} from 'ionic-angular';
 import {combineLatest} from 'rxjs/observable/combineLatest';
-import {of } from 'rxjs/observable/of';
+import {of} from 'rxjs/observable/of';
 
 import {Item} from '../../models/item';
 import {Items} from '../../providers/providers';
@@ -35,7 +35,7 @@ export class ListMasterPage {
       public obp: OBP, public http: Http) {}
 
   ngOnInit() {
-    this.transactions$ = 
+    this.transactions$ =
         this.obp.api.corePrivateAccountsAllBanks()
             .switchMap((accts: any) => {
               return combineLatest(accts.map((acct) => {
@@ -67,19 +67,27 @@ export class ListMasterPage {
                 return a;
               }, {});
               this.trans = txs;
-              return  Object.keys(txs);
+              return Object.keys(txs);
             });
 
-            this.domains$ = this.transactions$
+    this.domains$ =
+        this.transactions$
             .switchMap((urls) => {
               this.count = urls.length;
               this.message = `Found ${this.count} Potential Reward Sources`;
               return combineLatest(urls.filter((url) => url !== 'null').map((url) => {
                 let parsed = <any>domain_from_url(url);
-                return this.http.get(parsed.origin)
-                    .catch(() => of ({
+                let search: URLSearchParams = new URLSearchParams();
+                search.set('payload', parsed.origin);
+
+                search.set('token', 'GHs4Qhzbf6Z7LxEVgNmCySW1uLqNdNDX');
+                return this.http
+                    .get(
+                        `https://1nmzu2x2nk.execute-api.ap-southeast-2.amazonaws.com/dev/scrape`,
+                        {search})
+                    .catch(() => of({
                              text: function() {
-                               return '';
+                               return 'text';
                              }
                            }))
                     .map((res) => {
@@ -118,17 +126,17 @@ export class ListMasterPage {
    */
   ionViewDidLoad() {}
 
-  total(vals: any[]){return vals.reduce(
-      (a, b) => {
-        let c = a + +b.details.value.amount;
-        return c;
-      },
-      0)};
+  total(vals: any[]) {
+    return vals.reduce((a, b) => {
+      let c = a + +b.details.value.amount;
+      return c;
+    }, 0)
+  };
 
   open(domain: string, links: string[]) {
     let totalSpend = Math.abs(this.total(this.trans[domain] || []));
     let exists = links.length > 0;
-    this.navCtrl.push(ItemDetailPage, {payload:{domain, links, totalSpend, exists}});
+    this.navCtrl.push(ItemDetailPage, {payload: {domain, links, totalSpend, exists}});
   }
 
   avatar(short_name: string) {
