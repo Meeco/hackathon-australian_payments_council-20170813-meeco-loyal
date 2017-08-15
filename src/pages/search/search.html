@@ -8,12 +8,12 @@
 
 
 <ion-content>
-  <ion-item>
+  <!-- <ion-item>
     <ion-label>Merchant</ion-label>
     <ion-select name="counterparty" [(ngModel)]="selected">
       <ion-option *ngFor="let counterparty of counterparties" [value]="counterparty">{{counterparty.URL}}</ion-option>
     </ion-select>
-  </ion-item>
+  </ion-item> -->
   <h1>{{selected.URL}}</h1>
   <h2>Most Loyal Customers</h2>
 
@@ -25,8 +25,7 @@
         <img [src]="item?.user?.picture?.thumbnail" />
       </ion-avatar> 
       <h2>{{item?.user?.name?.first}} {{item?.user?.name?.last}}</h2>
-      <p>{{item.amount | number : '1.2-2'}}</p>
-      <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
+      <ion-note item-end>{{item.amount | number : '1.2-2'}}</ion-note>
     </button>
   </ion-list> 
 

@@ -10,6 +10,7 @@ import { OBP } from "../../providers/obp";
 import { usersData } from "../../mocks/users-data";
 import { LoginPage } from "../login/login";
 import { SearchPage } from "../search/search";
+import { counterpartiesMock } from "../../mocks/counterparties";
 
 @Component({selector: 'merchant-page-login', templateUrl: 'merchant-login.html'})
 export class MerchantLoginPage {
@@ -24,7 +25,8 @@ export class MerchantLoginPage {
   }
 
   async getCounterparties() {
-    let counterparties = await this.storage.get('counterparties')
+    let counterparties = counterpartiesMock;
+    // let counterparties = await this.storage.get('counterparties')
     // let counterparties = JSON.parse(localStorage.getItem('counterparties'));
     console.log(`counterparties are ${JSON.stringify(counterparties)}`)
     this.merchants = Object.keys(counterparties).map(function(key) {

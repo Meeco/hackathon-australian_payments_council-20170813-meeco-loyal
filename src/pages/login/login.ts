@@ -75,6 +75,17 @@ export class LoginPage {
       await this.getAllTheUsersData();
     }
     localStorage.setItem('Authorization', '');
+
+    let storageUsers = await this.storage.get('users');
+    let storageAccounts = await this.storage.get('accounts');
+    let storageTransactions = await this.storage.get('transactions');
+    let storageCounterparties = await this.storage.get('counterparties');
+    
+    console.log(`storageUsers are ${JSON.stringify(storageUsers)}`)
+    console.log(`storageAccounts are ${JSON.stringify(storageAccounts)}`)
+    console.log(`storageTransactions are ${JSON.stringify(storageTransactions)}`)
+    console.log(`storageCounterparties are ${JSON.stringify(storageCounterparties)}`)
+
     this.loadingAllUserData = false;
   }
 

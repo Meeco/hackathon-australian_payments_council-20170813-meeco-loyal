@@ -8,6 +8,11 @@ import { Item } from '../../models/item';
 
 import { Items } from '../../providers/providers';
 
+import { usersMock } from "../../mocks/users";
+import { accountsMock } from "../../mocks/accounts";
+import { counterpartiesMock } from "../../mocks/counterparties";
+import { transactionsMock } from "../../mocks/transactions";
+
 
 @Component({
   selector: 'page-search',
@@ -16,7 +21,7 @@ import { Items } from '../../providers/providers';
 export class SearchPage implements OnInit{
   currentItems: any = [];
   counterparties = [];
-  users = [];
+  users = {};
   transactions = [];
   selected = null;
 
@@ -94,7 +99,8 @@ export class SearchPage implements OnInit{
   }
 
   async getCounterparties() {
-    let counterparties = await this.storage.get('counterparties');
+    let counterparties = counterpartiesMock;
+    // let counterparties = await this.storage.get('counterparties');
     // let counterparties = JSON.parse(localStorage.getItem('counterparties'));
     this.counterparties = Object.keys(counterparties).map(function(key) {
       return counterparties[key];
@@ -102,12 +108,14 @@ export class SearchPage implements OnInit{
   }
 
   async getUsers() {
-    this.users = await this.storage.get('users');
+    this.users = usersMock;
+    // this.users = await this.storage.get('users');
     // this.users = JSON.parse(localStorage.getItem('users'));
   }
 
   async getTransactions() {
-    let transactions = await this.storage.get('transactions');
+    let transactions = transactionsMock;
+    // let transactions = await this.storage.get('transactions');
     // let transactions = JSON.parse(localStorage.getItem('transactions'));
     this.transactions = Object.keys(transactions).map(function(key) {
       return transactions[key];
