@@ -13,7 +13,7 @@ pipeline {
         configFileProvider([configFile(fileId: 'GLOBAL_NPMRC', targetLocation: '.npmrc')]) {
         sh 'npm install'
       }
-      sh "node_modules/.bin/ionic-app-scripts build --prod"
+      sh "node_modules/.bin/ionic-app-scripts build"
     }
     post {
       success {
