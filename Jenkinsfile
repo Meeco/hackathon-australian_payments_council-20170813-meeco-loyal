@@ -12,12 +12,16 @@ pipeline {
       steps {
         configFileProvider([configFile(fileId: 'GLOBAL_NPMRC', targetLocation: '.npmrc')]) {
         sh 'npm install'
+        sh 'npm run build'
+        sh 'ionic cordova platform add ios android --no-interactive'
+        sh 'ionic cordova prepare ios android --no-interactive'
       }
-      sh "node_modules/.bin/ionic-app-scripts build"
     }
     post {
       success {
           stash includes: 'www/**', name: 'build'
+          stash includes: 'platforms/ios/**', name: 'ios'
+          stash includes: 'platforms/android/**', name: 'android'
           zip archive: true, dir: 'www/', glob: '', zipFile: "staging_${BUILD_NUMBER}.zip"
       }
     }

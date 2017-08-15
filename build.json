@@ -1,0 +1,13 @@
+{
+  "ios": {
+    "release": {
+      "codeSignIdentity": "iPhone Distribution: MEECO GROUP PTY LIMITED",
+      "developmentTeam": "2FUZ4TTVVM",
+      "packageType": "enterprise",
+      "provisioningProfile": "f85c1538-7cf4-4fa3-8f32-3c6b974764cc",
+      "buildFlag": [
+        "-exportProvisioningProfile=./certificates/loyal.mobileprovison"
+      ]
+    }
+  }
+}
